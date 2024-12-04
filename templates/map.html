@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+<body>
+    <h1>GPS Data Map</h1>
+    <div id="map" style="width: 100%; height: 600px;"></div>
+    <script>
+        var map = L.map('map').setView([0, 0], 2);
+
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Add markers for each GPS entry
+        var gpsData = {{ gps_data | tojson }};
+        gpsData.forEach(function(entry) {
+            L.marker([entry.latitude, entry.longitude])
+             .addTo(map)
+             .bindPopup(entry.address || "Unknown Address");
+        });
+    </script>
+</body>
+</html>

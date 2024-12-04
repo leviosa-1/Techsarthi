@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32 Communication</title>
+    <script>
+        async function sendMessage() {
+            const message = document.getElementById('message').value;
+            const response = await fetch('/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message })
+            });
+            const result = await response.json();
+            alert(result.message);
+        }
+
+        async function refreshCoordinates() {
+            const response = await fetch('/receive', { method: 'POST' });
+            const data = await response.json();
+            document.getElementById('coordinates').innerText = `Latitude: ${data.latitude}, Longitude: ${data.longitude}`;
+        }
+
+        setInterval(refreshCoordinates, 5000); // Auto-refresh coordinates every 5 seconds
+    </script>
+</head>
+<body>
+    <h1>ESP32 Communication</h1>
+    <div>
+        <h2>Current Coordinates</h2>
+        <p id="coordinates">Latitude: {{ coordinates.latitude }}, Longitude: {{ coordinates.longitude }}</p>
+    </div>
+    <div>
+        <h2>Send Message to ESP32</h2>
+        <input type="text" id="message" placeholder="Type your message">
+        <button onclick="sendMessage()">Send</button>
+    </div> 
+</body>
+</html>

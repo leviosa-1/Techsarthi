@@ -14,12 +14,22 @@
     <nav class="navbar">
         <div class="logo">Tech Sarthi</div>
         <ul class="menu">
+            <li><button onclick="openInfo()">Info</button></li>
             <li><a href="#about">About</a></li>
             <li><a href="#gps-location">Location</a></li>
             <li><a href="/logout">Log Out</a></li>
         </ul>
     </nav>
-
+<!-- Info Modal -->
+<div id="info-modal" class="form-popup" style="display: none;">
+    <div class="form-content">
+            <span class="close" onclick="closeInfo()">&times;</span>
+            <h2>User Information</h2>
+            <p><strong>Name:</strong> {{ user_name }}</p>
+            <p><strong>Email:</strong> {{ user_email }}</p>
+            <p><strong>Phone:</strong> {{ user_mobile }}</p>
+    </div>
+</div>
     <!-- Welcome Section -->
     <section id="welcome">
         <h1>Welcome, {{ user_name }}!</h1>

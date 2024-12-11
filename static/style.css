@@ -153,29 +153,75 @@ color: white;
 
 /* Welcome Section */
 .welcome {
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-text-align: center;
-height: 100vh;
-color: white;
-margin-top: -120px;
-margin-top: -80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100vh;
+  background: linear-gradient(to bottom, #318CE7, #00509E); /* Add a gradient background */
+  color: white;
+  animation: fadeIn 1.5s ease-in-out;
 }
 
+/* Heading Animation */
 .welcome h1 {
-color: #318CE7;
-font-size: 3rem;
-margin-bottom: 20px;
+  color: #ffffff; /* Bright white for contrast */
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  animation: textSlideIn 1.2s ease-in-out;
 }
 
+/* Paragraph Animation */
 .welcome p {
-font-size: 1.2rem;
-line-height: 1.5;
-max-width: 1600px;
-color: #cccccc  ;
+  font-size: 1.3rem;
+  line-height: 1.8;
+  max-width: 800px; /* Limit the paragraph width */
+  color: #f1f1f1;
+  animation: fadeInDelay 2s ease-in-out;
 }
+
+/* Add some glow effect to the welcome heading */
+.welcome h1:hover {
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.6);
+  transition: text-shadow 0.5s ease-in-out;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInDelay {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes textSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
 /* Message Section */
 .message-section {

@@ -31,13 +31,13 @@ function closeForm(formId) {
   document.getElementById(`${formId}-form`).style.display = "none";
 }
 
-// Show login form based on URL parameters
-const urlParams = new URLSearchParams(window.location.search);
-const showLoginPopup = urlParams.get("show_login_popup");
-if (showLoginPopup === "true") {
+// Check if the login popup should be shown
+const showLoginPopup = JSON.parse(document.getElementById('show-login-popup').textContent);
+if (showLoginPopup) {
   openForm("login");
+} else {
+  closeForm("login");
 }
-// Submit the message and show the pop-up
 
 
 // Typing effect for the user's name on the homepage

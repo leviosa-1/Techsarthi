@@ -15,6 +15,9 @@ firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://blind-stick-app-9e9d4-default-rtdb.firebaseio.com'
 })
 
+# Secret key from Google reCAPTCHA
+RECAPTCHA_SECRET_KEY = "6Lc045gqAAAAAESIvd0sP-iT1Xa2i2DX8L-WnLW6"
+
 # Global variable for latest message
 latest_message = ""
 
@@ -30,13 +33,28 @@ def index():
 
 @app.route('/signup', methods=['POST'])
 def signup():
-    """Handles user signup."""
+    """Handles user signup with CAPTCHA verification."""
     try:
         # Retrieve form data
         name = request.form['name']
         mobile = request.form['mobile']
         email = request.form['email']
         password = request.form['password']
+        captcha_response = request.form['g-recaptcha-response']
+
+        # Verify CAPTCHA
+        captcha_verify_url = "https://www.google.com/recaptcha/api/siteverify"
+        captcha_payload = {
+            'secret': "6Lc045gqAAAAAESIvd0sP-iT1Xa2i2DX8L-WnLW6",  # Replace with your reCAPTCHA secret key
+            'response': captcha_response
+        }
+        captcha_verification = requests.post(captcha_verify_url, data=captcha_payload)
+        captcha_result = captcha_verification.json()
+
+        # Check if CAPTCHA verification was successful
+        if not captcha_result.get('success'):
+            flash("CAPTCHA verification failed. Please try again.", "error")
+            return redirect(url_for('index', show_login_popup='true'))
 
         # Hash the password for security
         hashed_password = generate_password_hash(password)
@@ -59,11 +77,12 @@ def signup():
 
         # Push data to Firebase
         ref.push(user_data)
-         # Set session variable
+
+        # Set session variables
         session['user_name'] = name
         session['user_email'] = email
         session['user_mobile'] = mobile
-        
+
         # Redirect to home page with login popup
         flash("Registration successful! Please log in.", "success")
         return redirect(url_for('index', show_login_popup='true'))
@@ -72,6 +91,7 @@ def signup():
         print(f"Error during signup: {e}")
         flash("An error occurred during registration. Please try again.", "error")
         return redirect(url_for('index'))
+
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -199,7 +219,7 @@ def send_message():
 
         # Push message to Firebase
         ref = db.reference('messages')
-        new_message_ref = ref.push({'message': message})
+        new_message_ref = ref.set({'message': message})
 
         # Schedule deletion after 10 seconds
         Timer(10.0, delete_message, args=(new_message_ref.key,)).start()
@@ -254,5 +274,5 @@ def delete_message(message_key):
 # ======================
 # MAIN
 # ======================
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run(host="localhost", port=5000, debug=True)

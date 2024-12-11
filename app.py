@@ -1,10 +1,6 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session, flash
 import firebase_admin
-#<<<<<<< HEAD
 from firebase_admin import credentials, db
-#=======
-from firebase_admin import credentials, db,auth
-#>>>>>>> 62dbd262ef238130c723972dfbaddea277b6ba7b
 from werkzeug.security import generate_password_hash, check_password_hash
 from threading import Timer
 import requests
@@ -22,7 +18,6 @@ firebase_admin.initialize_app(cred, {
 # Global variable for latest message
 latest_message = ""
 
-
 # ======================
 # ROUTES
 # ======================
@@ -30,8 +25,8 @@ latest_message = ""
 @app.route('/')
 def index():
     """Homepage with signup and login options."""
-    return render_template('index.html')
-
+    show_login_popup = request.args.get('show_login_popup', 'false')
+    return render_template('index.html', show_login_popup=show_login_popup)
 
 @app.route('/signup', methods=['POST'])
 def signup():
@@ -64,11 +59,11 @@ def signup():
 
         # Push data to Firebase
         ref.push(user_data)
-        # Set session variable
+         # Set session variable
         session['user_name'] = name
         session['user_email'] = email
         session['user_mobile'] = mobile
-
+        
         # Redirect to home page with login popup
         flash("Registration successful! Please log in.", "success")
         return redirect(url_for('index', show_login_popup='true'))
@@ -78,12 +73,6 @@ def signup():
         flash("An error occurred during registration. Please try again.", "error")
         return redirect(url_for('index'))
 
-
-
-#<<<<<<< HEAD
-
-#=======
-#>>>>>>> 62dbd262ef238130c723972dfbaddea277b6ba7b
 @app.route('/login', methods=['POST'])
 def login():
     """Handles user login."""
@@ -99,41 +88,37 @@ def login():
         ref = db.reference('users')
         users = ref.get()
 
-        if not users:
-            flash("No users found in the database. Please sign up first.", "error")
-            return redirect(url_for('index'))
-
         # Verify credentials
-        for key, user in users.items():
+        for user in users.values():
             if user.get('email') == email and check_password_hash(user.get('password'), password):
-                # Store user details in session
+                 # Store user details in session
                 session['user_name'] = user.get('name')
                 session['user_email'] = user.get('email')
                 session['user_mobile'] = user.get('mobile')
                 flash(f"Welcome, {user.get('name')}!", "success")
-                return redirect(url_for('message'))
+                return redirect(url_for('message'))  # Redirect to message page
 
         flash("Invalid email or password.", "error")
         return redirect(url_for('index'))
 
     except Exception as e:
-        app.logger.error(f"Login error: {e}")
+        print(f"Login error: {e}")
         flash("An error occurred during login. Please try again.", "error")
         return redirect(url_for('index'))
-
 
 @app.route('/message')
 def message():
     try:
-         # Fetch user details from session
+        # Fetch user details from session
         user_name = session.get('user_name', 'Guest')
         user_email = session.get('user_email', 'Not available')
         user_mobile = session.get('user_mobile', 'Not available')
+        
         if not user_name:
             app.logger.warning("User not logged in. Redirecting to login page.")
-            return redirect(url_for('index'))
+            return redirect(url_for('index'))  # Redirect to login page if session is not set
 
-       # Fetch the latest GPS data from Firebase
+        # Fetch the latest GPS data from Firebase
         ref = db.reference('gps_data')
         gps_data_list = ref.order_by_key().limit_to_last(1).get()  # Get the most recent entry
         gps_data = list(gps_data_list.values())[0] if gps_data_list else None
@@ -141,17 +126,15 @@ def message():
         if gps_data:
             latest_data = list(gps_data.values())[0]
             coordinates = {
-                "latitude": latest_data.get('latitude', ' 17.781006'),
+                "latitude": latest_data.get('latitude', '17.781006'),
                 "longitude": latest_data.get('longitude', '83.372903'),
                 "address": latest_data.get('address', 'Gitam University, GITAM University Main Road, Rushikonda, Vadapalem - 530045, Andhra Pradesh, India')
             }
         else:
-            coordinates = {"latitude": " 17.781006", "longitude": "83.372903", "address": "Gitam University, GITAM University Main Road, Rushikonda, Vadapalem - 530045, Andhra Pradesh, India"}
+            coordinates = {"latitude": "17.781006", "longitude": "83.372903", "address": "Gitam University, GITAM University Main Road, Rushikonda, Vadapalem - 530045, Andhra Pradesh, India"}
 
-        # Debugging output
         app.logger.info(f"Displaying message page for user: {user_name}")
-
-        # Pass user and GPS data to the template
+         # Pass user and GPS data to the template
         return render_template(
             'message.html',
             user_name=user_name,
@@ -159,10 +142,10 @@ def message():
             user_mobile=user_mobile,
             gps_data=coordinates
         )
+       
     except Exception as e:
         app.logger.error(f"Error in message route: {e}")
         return render_template('message.html', error="Could not load data.")
-
 
 @app.route('/coordinates', methods=['POST'])
 def receive_coordinates():
@@ -172,7 +155,7 @@ def receive_coordinates():
 
         # Default coordinates and address
         default_latitude = 17.781006
-        default_longitude = 83.372903 
+        default_longitude = 83.372903
         default_address = "Gitam University, GITAM University Main Road, Rushikonda, Vadapalem - 530045, Andhra Pradesh, India"
 
         # Check if data is provided
@@ -192,8 +175,7 @@ def receive_coordinates():
             # Fallback to default address if geocoding fails
             if address == "Error converting coordinates to address":
                 address = default_address
-        
-        print(latitude, longitude,address)
+
         # Push GPS data to Firebase Realtime Database
         ref = db.reference('gps_data')
         gps_data = {
@@ -207,7 +189,6 @@ def receive_coordinates():
     except Exception as e:
         app.logger.error(f"Error saving coordinates: {e}")
         return jsonify({"error": "Failed to save coordinates"}), 400
-
 
 @app.route('/send', methods=['POST'])
 def send_message():
@@ -229,7 +210,6 @@ def send_message():
         print(f"Error sending message: {e}")
         return jsonify({"error": str(e)}), 400
 
-
 @app.route('/get-latest-message', methods=['GET'])
 def get_latest_message():
     """Fetch the latest message."""
@@ -240,14 +220,12 @@ def get_latest_message():
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
-
 @app.route('/logout')
 def logout():
     """Log the user out."""
     session.clear()
     flash("You have been logged out.", "info")
     return redirect(url_for('index'))
-
 
 # ======================
 # HELPER FUNCTIONS
@@ -264,7 +242,6 @@ def get_address_from_coordinates(lat, lon):
         print(f"Geocoding error: {e}")
         return "Error converting coordinates to address"
 
-
 def delete_message(message_key):
     """Delete a message from Firebase after a delay."""
     try:
@@ -274,9 +251,8 @@ def delete_message(message_key):
     except Exception as e:
         print(f"Error deleting message: {e}")
 
-
 # ======================
 # MAIN
 # ======================
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(debug=True)

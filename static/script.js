@@ -1,111 +1,7 @@
-// Open and Close Forms
+// Function to open the forms (login or register)
 function openForm(formId) {
   document.getElementById(`${formId}-form`).style.display = "block";
 }
-
-function closeForm(formId) {
-  document.getElementById(`${formId}-form`).style.display = "none";
-}
-
-// Close forms when clicking outside the form
-window.onclick = function (event) {
-  const registerForm = document.getElementById("register-form");
-  const loginForm = document.getElementById("login-form");
-  if (event.target === registerForm) registerForm.style.display = "none";
-  if (event.target === loginForm) loginForm.style.display = "none";
-};
-
-// Check for the "show_login_popup" query parameter
-const urlParams = new URLSearchParams(window.location.search);
-const showLoginPopup = urlParams.get("show_login_popup");
-if (showLoginPopup === "true") {
-  openForm("login"); // Automatically open the login form
-}
-
-
-// Save the user name when registering
-function saveName() {
-  const name = document.getElementById("name").value;
-  if (name) {
-    localStorage.setItem("userName", name);
-  }
-}
-
-// Typing animation for the user name
-document.addEventListener("DOMContentLoaded", () => {
-  const userName = localStorage.getItem("userName") || "User";
-  const userNameElement = document.getElementById("user-name");
-
-  let i = 0;
-  function typeWriter() {
-    if (i < userName.length) {
-      userNameElement.textContent += userName.charAt(i);
-      i++;
-      setTimeout(typeWriter, 250); // Adjust typing speed here
-    }
-  }
-  typeWriter();
-});
-
-// Submit the message and show the pop-up
-function submitMessage() {
-  const message = document.getElementById("message-box").value;
-  if (message.trim() === "") {
-    alert("Please enter a message before submitting!");
-    return;
-  }
-
-  // Show the message pop-up
-  const popup = document.getElementById("message-popup");
-  popup.style.display = "flex";
-
-  // Clear the textarea
-  document.getElementById("message-box").value = "";
-}
-
-// Close the message pop-up
-function closePopup() {
-  const popup = document.getElementById("message-popup");
-  popup.style.display = "none";
-}
-
-// Auto-hide flash messages after a few seconds
-document.addEventListener("DOMContentLoaded", () => {
-  const flashMessages = document.querySelectorAll(".flash-message");
-  flashMessages.forEach((message) => {
-    message.style.display = "block";
-    setTimeout(() => {
-      message.style.display = "none";
-    }, 4000); // Adjust time as needed
-  });
-});
-
-// Fetch and display live coordinates
-async function refreshCoordinates() {
-  const response = await fetch("/receive", { method: "POST" });
-  const data = await response.json();
-  document.getElementById("coordinates").innerText = `Latitude: ${data.latitude}, Longitude: ${data.longitude}`;
-}
-
-function toggleMenu() {
-  const menu = document.querySelector('.menu');
-  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-}
-
-function openInfo() {
-  document.getElementById('info-modal').style.display = 'block';
-}
-
-// Close the Info Modal
-function closeInfo() {
-  document.getElementById('info-modal').style.display = 'none';
-}
-
-
-
-// Auto-refresh coordinates every 5 seconds
-setInterval(refreshCoordinates, 5000);
-
 // Send message to the backend
 async function sendMessage() {
   const message = document.getElementById("message-input").value;
@@ -128,7 +24,90 @@ async function sendMessage() {
   } catch (error) {
     console.error("Error sending message:", error);
     alert("An error occurred while sending the message.");
+  }
+}
+// Function to close the forms (login or register)
+function closeForm(formId) {
+  document.getElementById(`${formId}-form`).style.display = "none";
+}
+
+// Show login form based on URL parameters
+const urlParams = new URLSearchParams(window.location.search);
+const showLoginPopup = urlParams.get("show_login_popup");
+if (showLoginPopup === "true") {
+  openForm("login");
+}
+// Submit the message and show the pop-up
+
+
+// Typing effect for the user's name on the homepage
+document.addEventListener("DOMContentLoaded", () => {
+  const userName = localStorage.getItem("userName") || "User"; // Default to 'User' if no name is saved
+  const userNameElement = document.getElementById("user-name");
+  let i = 0;
+
+  function typeWriter() {
+    if (i < userName.length) {
+      userNameElement.textContent += userName.charAt(i);
+      i++;
+      setTimeout(typeWriter, 250); // Adjust typing speed here
+    }
   }
+
+  typeWriter(); // Start the typing animation
+});
+
+// Function to update the location on the message page (if applicable)
+function updateLocation(latitude, longitude) {
+  // Example using OpenStreetMap or Google Maps to update location on a map
+  const map = L.map('map').setView([latitude, longitude], 13); // Assuming you're using Leaflet for maps
+
+  // Adding OpenStreetMap tile layer to the map
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  // Add a marker at the given latitude and longitude
+  L.marker([latitude, longitude]).addTo(map)
+    .bindPopup('Your current location')
+    .openPopup();
+}
+
+// Example of using a function to populate a message box or map with live data
+document.getElementById('location-button').addEventListener('click', function() {
+  // Fetch new coordinates or other data when the user clicks
+  const newLatitude = 17.781006;  // Replace with actual dynamic data
+  const newLongitude = 83.372903;  // Replace with actual dynamic data
+  updateLocation(newLatitude, newLongitude);
+});
+
+// Handling dynamic content such as user data (if user logs in)
+document.addEventListener("DOMContentLoaded", () => {
+  // Assuming user is logged in and user data is available
+  const userName = sessionStorage.getItem("userName") || "Guest";  // Retrieve username stored in session
+  const userEmail = sessionStorage.getItem("userEmail") || "Not logged in";  // Retrieve email or other user info
+
+  if (userName !== "Guest") {
+    document.getElementById('welcome-message').textContent = `Welcome back, ${userName}!`;
+    document.getElementById('user-info').textContent = `Email: ${userEmail}`;
+  }
+});
+
+// Handling logout functionality
+function logout() {
+  sessionStorage.clear();  // Clear user session data
+  window.location.href = "/";  // Redirect to home page after logout
+}
+
+// Adding logout event listener (if a logout button exists in your UI)
+const logoutButton = document.getElementById('logout-button');
+if (logoutButton) {
+  logoutButton.addEventListener('click', logout);
+}
+
+function toggleMenu() {
+  const menu = document.querySelector('.menu');
+  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
 }
 
 function openInfo() {
@@ -144,5 +123,6 @@ function closeInfo() {
   infoModal.classList.add('closing'); // Add closing animation class
   setTimeout(() => {
       infoModal.style.display = 'none'; // Hide the modal after animation
-  }, 500); // Match the animation duration (0.5s)
+  }, 500); // Match the animation duration (0.5s)
 }
+

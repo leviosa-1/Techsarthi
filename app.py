@@ -202,7 +202,7 @@ def send_message():
         new_message_ref = ref.set({'message': message})
 
         # Schedule deletion after 10 seconds
-        Timer(10.0, delete_message, args=(new_message_ref.key,)).start()
+        Timer(5.0, delete_message, args=(new_message_ref.key,)).start()
 
         return jsonify({"message": "Message sent to ESP32"}), 200
 

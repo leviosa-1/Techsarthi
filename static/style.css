@@ -64,7 +64,7 @@ body {
   left: 50%;
   transform: translate(-50%, -50%); /* Center the element */    
   width: 400px; /* Adjust the width as needed */
-  padding: 20px; /* Optional padding for better design */
+  padding: 2px; /* Optional padding for better design */
   background-color: white; /* Set a background color */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional shadow for aesthetics */
   border-radius: 10px; /* Optional rounded corners */
@@ -74,7 +74,7 @@ body {
 .form-content {
   background-color: white;
   color: #318CE7;
-  padding: 20px;
+  padding: 40px;
   border-radius: 10px;
   width: 300px;
   text-align: center;

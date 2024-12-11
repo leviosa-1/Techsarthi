@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">Tech Sarthi</div>
+        <ul class="menu">
+            <li><a href="#about">About</a></li>
+            <li><a href="#gps-location">Location</a></li>
+            <li><a href="/logout">Log Out</a></li>
+        </ul>
+    </nav>
+
+    <!-- Welcome Section -->
+    <section id="welcome">
+        <h1>Welcome, {{ user_name }}!</h1>
+    </section>
+
+   
+    <!-- Message Section -->
+    <section id="message" class="message-section">
+        <div class="message-container">
+            <h2>Send a Message</h2>
+            <textarea  type="text" id="message-input" placeholder="Type your message"rows="5"></textarea>
+            <button onclick="sendMessage()">Submit</button>
+        </div>
+    </section>
+
+
+    <!-- Message Sent Pop-Up -->
+    <div id="message-popup" class="message-popup">
+        <div class="popup-content">
+            <h3>Message Sent!</h3>
+            <button onclick="closePopup()">OK</button>
+        </div>
+    </div>
+
+
+    <section id="gps-location">
+        <h2>Current Location</h2>
+        <p>Latitude: {{ gps_data.latitude if gps_data and gps_data.latitude else 17.781006 }}</p>
+        <p>Longitude: {{ gps_data.longitude if gps_data and gps_data.longitude else 83.372903 }}</p>
+        <p>Address: {{ gps_data.address if gps_data and gps_data.address else "Gitam University, GITAM University Main Road, Rushikonda, Vadapalem - 530045, Andhra Pradesh, India" }}</p>
+    </section>
+    
+        
+        <h1>Location on OpenStreetMap</h1>
+        <!-- Map Container -->
+        <div id="map" style="height: 400px;"></div>
+        
+        <script>
+            const coordinates = [
+                {{ gps_data.latitude if gps_data and gps_data.latitude else 17.781006 | safe }},
+                {{ gps_data.longitude if gps_data and gps_data.longitude else 83.372903 | safe }}
+            ];
+        
+            const map = L.map('map').setView(coordinates, 13);
+        
+            // Add map tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+        
+            // Add marker
+            L.marker(coordinates).addTo(map)
+                .bindPopup('{{ gps_data.address if gps_data and gps_data.address else "Gitam University, GITAM University Main Road, Rushikonda, Vadapalem - 530045, Andhra Pradesh, India" }}')
+                .openPopup();
+        </script>
+    
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

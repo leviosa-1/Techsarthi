@@ -210,25 +210,32 @@ def receive_coordinates():
         app.logger.error(f"Error saving coordinates: {e}")
         return jsonify({"error": "Failed to save coordinates"}), 400
 
+from threading import Timer
+from firebase_admin import db
+
 @app.route('/send', methods=['POST'])
 def send_message():
-    """Send a message to Firebase and schedule its deletion."""
+    """Send a message to Firebase and set it to null after 5 seconds."""
     try:
         data = request.get_json()
         message = data.get('message', '')
 
-        # Push message to Firebase
+        if not message:
+            return jsonify({"error": "Message cannot be empty"}), 400
+
+        # Save the message to Firebase
         ref = db.reference('messages')
-        new_message_ref = ref.set({'message': message})
+        ref.set({'message': message})  # Setting directly without generating a key
 
-        # Schedule deletion after 10 seconds
-        Timer(5.0, delete_message, args=(new_message_ref.key,)).start()
+        # Schedule setting the message to null after 5 seconds
+        Timer(5.0, lambda: ref.set({'message': ''})).start()
 
-        return jsonify({"message": "Message sent to ESP32"}), 200
+        return jsonify({"message": "Message sent to ESP32 and will be deleted after 5 seconds"}), 200
 
     except Exception as e:
         print(f"Error sending message: {e}")
         return jsonify({"error": str(e)}), 400
+
 
 @app.route('/get-latest-message', methods=['GET'])
 def get_latest_message():

@@ -63,6 +63,17 @@ async function sendMessage() {
       alert("Failed to send message due to a network error: " + error.message);
   }
 }
+// Function to show the popup
+function showPopup() {
+  const popup = document.getElementById('message-popup');
+  popup.style.display = 'block';
+}
+
+// Function to close the popup
+function closePopup() {
+  const popup = document.getElementById('message-popup');
+  popup.style.display = 'none';
+}
 // Function to close the forms (login or register)
 function closeForm(formId) {
   document.getElementById(`${formId}-form`).style.display = "none";

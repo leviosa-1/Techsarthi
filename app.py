@@ -199,7 +199,7 @@ def send_message():
 
         # Push message to Firebase
         ref = db.reference('messages')
-        new_message_ref = ref.push({'message': message})
+        new_message_ref = ref.set({'message': message})
 
         # Schedule deletion after 10 seconds
         Timer(10.0, delete_message, args=(new_message_ref.key,)).start()

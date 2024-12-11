@@ -3,28 +3,65 @@ function openForm(formId) {
   document.getElementById(`${formId}-form`).style.display = "block";
 }
 // Send message to the backend
+// async function sendMessage() {
+//   const message = document.getElementById("message-input").value;
+//   if (!message) {
+//     alert("Please enter a message!");
+//     return;
+//   }
+
+//   try {
+//     const response = await fetch("/send", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({ message }),
+//     });
+
+//     const result = await response.json();
+//     alert(result.message);
+//   } catch (error) {
+//     console.error("Error sending message:", error);
+//     alert("An error occurred while sending the message.");
+//   }
+// }
 async function sendMessage() {
-  const message = document.getElementById("message-input").value;
-  if (!message) {
-    alert("Please enter a message!");
-    return;
+  const message = document.getElementById('message-input').value;
+
+  if (message.trim() === "") {
+      alert("Please enter a message before submitting!");
+      return;
   }
 
   try {
-    const response = await fetch("/send", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ message }),
-    });
+      // Send the message to the server
+      const response = await fetch('/send', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ message })
+      });
 
-    const result = await response.json();
-    alert(result.message);
+      // Parse the server's response
+      const result = await response.json();
+
+      if (response.ok) {
+          // Show the message pop-up
+          const popup = document.getElementById("message-popup");
+          popup.style.display = "flex";
+
+          // Clear the input field
+          document.getElementById('message-input').value = "";
+      } else {
+          // Show the error message from the server
+          alert("Failed to send message: " + (result.error || "Unknown error"));
+      }
   } catch (error) {
-    console.error("Error sending message:", error);
-    alert("An error occurred while sending the message.");
-  }
+      // Handle fetch or network errors
+      alert("Failed to send message due to a network error: " + error.message);
+  }
 }
 // Function to close the forms (login or register)
 function closeForm(formId) {

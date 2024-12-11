@@ -92,6 +92,7 @@ setInterval(refreshCoordinates, 5000);
 
 // Send message to the backend
 async function sendMessage() {
+<<<<<<< HEAD
   const message = document.getElementById("message-input").value;
   if (!message) {
     alert("Please enter a message!");
@@ -112,5 +113,35 @@ async function sendMessage() {
   } catch (error) {
     console.error("Error sending message:", error);
     alert("An error occurred while sending the message.");
+=======
+  const message = document.getElementById('message-input').value;
+
+  if (message.trim() === "") {
+      alert("Please enter a message before submitting!");
+      return;
+  }
+
+  // Send the message to the server
+  const response = await fetch('/send', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ message })
+  });
+
+  // Handle the server's response
+  const result = await response.json();
+
+  if (response.ok) {
+      // Show the message pop-up
+      const popup = document.getElementById("message-popup");
+      popup.style.display = "flex";
+
+      // Clear the input field
+      document.getElementById('message-input').value = "";
+  } else {
+      alert("Failed to send message: " + result.message);
+>>>>>>> 62dbd262ef238130c723972dfbaddea277b6ba7b
   }
 }

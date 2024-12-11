@@ -1,6 +1,10 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session, flash
 import firebase_admin
+<<<<<<< HEAD
 from firebase_admin import credentials, db
+=======
+from firebase_admin import credentials, db,auth
+>>>>>>> 62dbd262ef238130c723972dfbaddea277b6ba7b
 from werkzeug.security import generate_password_hash, check_password_hash
 from threading import Timer
 import requests
@@ -72,7 +76,10 @@ def signup():
 
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 62dbd262ef238130c723972dfbaddea277b6ba7b
 @app.route('/login', methods=['POST'])
 def login():
     """Handles user login."""

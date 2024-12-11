@@ -67,6 +67,11 @@ body, html {
     background-color: rgba(0, 0, 0, 0.7);
     justify-content: center;
     align-items: center;
+<<<<<<< HEAD
+=======
+    align-content: center;
+    align-self: center;
+>>>>>>> 62dbd262ef238130c723972dfbaddea277b6ba7b
   }
   
   .form-content {

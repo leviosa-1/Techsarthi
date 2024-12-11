@@ -1,42 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESP32 Communication</title>
-    <script>
-        async function sendMessage() {
-            const message = document.getElementById('message').value;
-            const response = await fetch('/send', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ message })
-            });
-            const result = await response.json();
-            alert(result.message);
-        }
-
-        async function refreshCoordinates() {
-            const response = await fetch('/receive', { method: 'POST' });
-            const data = await response.json();
-            document.getElementById('coordinates').innerText = `Latitude: ${data.latitude}, Longitude: ${data.longitude}`;
-        }
-
-        setInterval(refreshCoordinates, 5000); // Auto-refresh coordinates every 5 seconds
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tech Sarthi</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>ESP32 Communication</h1>
-    <div>
-        <h2>Current Coordinates</h2>
-        <p id="coordinates">Latitude: {{ coordinates.latitude }}, Longitude: {{ coordinates.longitude }}</p>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">Tech Sarthi</div>
+    <ul class="menu">
+      <li><a href="#about">About</a></li>
+      <li><button onclick="openForm('register')">Register</button></li>
+      <li><button onclick="openForm('login')">Login</button></li>
+    </ul>
+  </nav>
+
+  <!-- Register Form -->
+  <div id="register-form" class="form-popup">
+    <div class="form-content">
+      <span class="close" onclick="closeForm('register')">&times;</span>
+      <h2>Register</h2>
+      <form method="POST" action="/signup">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="number" name="mobile" placeholder="Mobile" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Submit</button>
+      </form>
     </div>
-    <div>
-        <h2>Send Message to ESP32</h2>
-        <input type="text" id="message" placeholder="Type your message">
-        <button onclick="sendMessage()">Send</button>
-    </div> 
+  </div>
+
+  <!-- Login Form -->
+  <div id="login-form" class="form-popup">
+    <div class="form-content">
+      <span class="close" onclick="closeForm('login')">&times;</span>
+      <h2>Login</h2>
+      <form method="POST" action="/login">
+        <input type="email" name="email" placeholder="Enter your email" required>
+        <input type="password" name="password" placeholder="Enter your password" required>
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  </div>
+ 
+  <!-- Welcome Section -->
+  <section class="welcome">
+    <h1>Welcome <span id="user-name"></span></h1>
+    <p>
+      Our innovative blind stick revolutionizes mobility for the visually impaired. 
+      It receives live messages and converts them into actionable feedback. <br>
+      Built with IoT technology, it ensures enhanced safety and independence.
+    </p>
+  </section>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script>
+    // The JavaScript code for opening and closing forms
+    function openForm(formId) {
+      document.getElementById(`${formId}-form`).style.display = "block";
+    }
+
+    function closeForm(formId) {
+      document.getElementById(`${formId}-form`).style.display = "none";
+    }
+
+    // Trigger the login form based on the query parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const showLoginPopup = urlParams.get("show_login_popup");
+    if (showLoginPopup === "true") {
+      openForm("login");
+    }
+  </script>
 </body>
 </html>

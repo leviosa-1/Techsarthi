@@ -1,128 +1,254 @@
-from flask import Flask, render_template, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session, flash
+import firebase_admin
+from firebase_admin import credentials, db,auth
+from werkzeug.security import generate_password_hash, check_password_hash
+from threading import Timer
 import requests
 
+# Initialize Flask app
 app = Flask(__name__)
+app.secret_key = "abcdefghijklmnopqrstuv123456789"  # Replace with a strong, unique key
 
-# SQLite Database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Blind_stick.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# Initialize Firebase
+cred = credentials.Certificate("blind-stick-app-9e9d4-firebase-adminsdk-8okyg-d5e5b84c02.json")
+firebase_admin.initialize_app(cred, {
+    'databaseURL': 'https://blind-stick-app-9e9d4-default-rtdb.firebaseio.com'
+})
 
-db = SQLAlchemy(app)
+# Global variable for latest message
+latest_message = ""
 
-# User model
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    age = db.Column(db.Integer, nullable=False)
-    email = db.Column(db.String(150), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
 
-# ESP32 data model
-class GPSData(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    latitude = db.Column(db.String(50), nullable=False)
-    longitude = db.Column(db.String(50), nullable=False)
-    address = db.Column(db.Text, nullable=True)
-
-# Create database tables
-with app.app_context():
-    db.create_all()
-
-# Global variable to store the latest coordinates
-coordinates = {"latitude": "", "longitude": ""}
+# ======================
+# ROUTES
+# ======================
 
 @app.route('/')
 def index():
-    """
-    Render the main page with the latest coordinates.
-    """
-    return render_template('index.html', coordinates=coordinates)
+    """Homepage with signup and login options."""
+    return render_template('index.html')
+
+
+@app.route('/signup', methods=['POST'])
+def signup():
+    """Handles user signup."""
+    try:
+        # Retrieve form data
+        name = request.form['name']
+        mobile = request.form['mobile']
+        email = request.form['email']
+        password = request.form['password']
+
+        # Hash the password for security
+        hashed_password = generate_password_hash(password)
+
+        # Check for existing user
+        ref = db.reference('users')
+        users = ref.get() or {}
+        for key, value in users.items():
+            if value.get('email') == email:
+                flash("Email is already registered. Please log in.", "error")
+                return redirect(url_for('index', show_login_popup='true'))
+
+        # Prepare user data
+        user_data = {
+            'name': name,
+            'mobile': mobile,
+            'email': email,
+            'password': hashed_password
+        }
+
+        # Push data to Firebase
+        ref.push(user_data)
+
+        # Redirect to home page with login popup
+        flash("Registration successful! Please log in.", "success")
+        return redirect(url_for('index', show_login_popup='true'))
+
+    except Exception as e:
+        print(f"Error during signup: {e}")
+        flash("An error occurred during registration. Please try again.", "error")
+        return redirect(url_for('index'))
+
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    """Handles user login."""
+    try:
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        if not email or not password:
+            flash("Email and password are required.", "error")
+            return redirect(url_for('index'))
+
+        # Fetch user data from Firebase
+        ref = db.reference('users')
+        users = ref.get()
+
+        # Verify credentials
+        for user in users.values():
+            if user.get('email') == email and check_password_hash(user.get('password'), password):
+                session['user_name'] = user.get('name')
+                flash(f"Welcome, {user.get('name')}!", "success")
+                return redirect(url_for('message'))
+
+        flash("Invalid email or password.", "error")
+        return redirect(url_for('index'))
+
+    except Exception as e:
+        print(f"Login error: {e}")
+        flash("An error occurred during login. Please try again.", "error")
+        return redirect(url_for('index'))
+
+
+@app.route('/message')
+def message():
+    try:
+        # Fetch user name from session
+        user_name = session.get('user_name', None)
+        if not user_name:
+            app.logger.warning("User not logged in. Redirecting to login page.")
+            return redirect(url_for('index'))
+
+       # Fetch the latest GPS data from Firebase
+        ref = db.reference('gps_data')
+        gps_data_list = ref.order_by_key().limit_to_last(1).get()  # Get the most recent entry
+        gps_data = list(gps_data_list.values())[0] if gps_data_list else None
+
+        if gps_data:
+            latest_data = list(gps_data.values())[0]
+            coordinates = {
+                "latitude": latest_data.get('latitude', ' 17.781006'),
+                "longitude": latest_data.get('longitude', '83.372903'),
+                "address": latest_data.get('address', 'Gitam University, GITAM University Main Road, Rushikonda, Vadapalem - 530045, Andhra Pradesh, India')
+            }
+        else:
+            coordinates = {"latitude": " 17.781006", "longitude": "83.372903", "address": "Gitam University, GITAM University Main Road, Rushikonda, Vadapalem - 530045, Andhra Pradesh, India"}
+
+        # Debugging output
+        app.logger.info(f"Displaying message page for user: {user_name}")
+
+        return render_template('message.html', user_name=user_name, gps_data=coordinates)
+    except Exception as e:
+        app.logger.error(f"Error in message route: {e}")
+        return render_template('message.html', error="Could not load data.")
+
 
 @app.route('/coordinates', methods=['POST'])
 def receive_coordinates():
     try:
+        # Parse JSON data from the request
         data = request.get_json()
-        latitude = data.get('latitude', '')
-        longitude = data.get('longitude', '')
 
-        # Convert coordinates to address using a geocoding API
-        address = get_address_from_coordinates(latitude, longitude)
+        # Default coordinates and address
+        default_latitude = 17.781006
+        default_longitude = 83.372903 
+        default_address = "Gitam University, GITAM University Main Road, Rushikonda, Vadapalem - 530045, Andhra Pradesh, India"
 
-        # Save to database
-        gps_data = GPSData(latitude=latitude, longitude=longitude, address=address)
-        db.session.add(gps_data)
-        db.session.commit()
+        # Check if data is provided
+        if not data or 'latitude' not in data or 'longitude' not in data:
+            # Use default coordinates if no valid data is received
+            latitude = default_latitude
+            longitude = default_longitude
+            address = default_address
+        else:
+            # Extract latitude and longitude from received data
+            latitude = data.get('latitude', default_latitude)
+            longitude = data.get('longitude', default_longitude)
 
-        print(f"Received and saved: Latitude={latitude}, Longitude={longitude}, Address={address}")
-        return jsonify({"message": "Coordinates received and saved successfully!"}), 200
+            # Convert coordinates to address using geocoding API
+            address = get_address_from_coordinates(latitude, longitude)
+
+            # Fallback to default address if geocoding fails
+            if address == "Error converting coordinates to address":
+                address = default_address
+        
+        print(latitude, longitude,address)
+        # Push GPS data to Firebase Realtime Database
+        ref = db.reference('gps_data')
+        gps_data = {
+            'latitude': latitude,
+            'longitude': longitude,
+            'address': address
+        }
+        ref.push(gps_data)
+
+        return jsonify({"message": "Coordinates received and saved successfully!", "gps_data": gps_data}), 200
     except Exception as e:
-        print(f"Error: {str(e)}")
+        app.logger.error(f"Error saving coordinates: {e}")
+        return jsonify({"error": "Failed to save coordinates"}), 400
+
+
+@app.route('/send', methods=['POST'])
+def send_message():
+    """Send a message to Firebase and schedule its deletion."""
+    try:
+        data = request.get_json()
+        message = data.get('message', '')
+
+        # Push message to Firebase
+        ref = db.reference('messages')
+        new_message_ref = ref.push({'message': message})
+
+        # Schedule deletion after 10 seconds
+        Timer(10.0, delete_message, args=(new_message_ref.key,)).start()
+
+        return jsonify({"message": "Message sent to ESP32"}), 200
+
+    except Exception as e:
+        print(f"Error sending message: {e}")
         return jsonify({"error": str(e)}), 400
+
+
+@app.route('/get-latest-message', methods=['GET'])
+def get_latest_message():
+    """Fetch the latest message."""
+    try:
+        ref = db.reference('messages')
+        data = ref.order_by_key().limit_to_last(1).get()
+        return jsonify(data), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+
+@app.route('/logout')
+def logout():
+    """Log the user out."""
+    session.clear()
+    flash("You have been logged out.", "info")
+    return redirect(url_for('index'))
+
+
+# ======================
+# HELPER FUNCTIONS
+# ======================
 
 def get_address_from_coordinates(lat, lon):
     try:
-        # Use OpenStreetMap's Nominatim
         url = f"https://nominatim.openstreetmap.org/reverse?format=json&lat={lat}&lon={lon}"
-        response = requests.get(url)
+        response = requests.get(url, timeout=10)  # Set a timeout for the request
+        response.raise_for_status()  # Raise an exception for HTTP errors
         data = response.json()
         return data.get('display_name', 'Unknown Address')
     except Exception as e:
         print(f"Geocoding error: {e}")
         return "Error converting coordinates to address"
 
-@app.route('/map')
-def map_view():
-    gps_data = GPSData.query.all()
-    return render_template('map.html', gps_data=gps_data)
 
-
-# Store the latest message
-latest_message = ""
-
-@app.route('/send', methods=['POST'])
-def send_message():
-    global latest_message
+def delete_message(message_key):
+    """Delete a message from Firebase after a delay."""
     try:
-        data = request.get_json()
-        latest_message = data.get('message', '')
-        print(f"Received message: {latest_message}")  # Log the message for debugging
-        return jsonify({"message": "Message sent to ESP32"}), 200
+        ref = db.reference(f'messages/{message_key}')
+        ref.delete()
+        print(f"Message with key {message_key} deleted successfully.")
     except Exception as e:
-        print(f"Error: {str(e)}")
-        return jsonify({"error": str(e)}), 400
-
-@app.route('/latest-message', methods=['GET'])
-def get_latest_message():
-    # Endpoint for ESP32 to fetch the latest message
-    return jsonify({"message": latest_message}), 200
-
-@app.route('/signup', methods=['GET', 'POST'])
-def signup():
-    if request.method == 'POST':
-        name = request.form['name']
-        age = request.form['age']
-        email = request.form['email']
-        password = request.form['password']
-
-        # Add user to the database
-        user = User(name=name, age=age, email=email, password=password)
-        db.session.add(user)
-        db.session.commit()
-
-        return jsonify({"message": "User signed up successfully!"}), 201
-
-    # Fetch user details and GPS data for rendering on the signup page
-    users = User.query.all()
-    gps_data = GPSData.query.all()
-    return render_template('signup_with_map.html', users=users, gps_data=gps_data)
-
-@app.route('/signup_with_map')
-def signup_with_map():
-    users = User.query.all()
-    gps_data = GPSData.query.all()
-    return render_template('signup_with_map.html', users=users, gps_data=gps_data)
+        print(f"Error deleting message: {e}")
 
 
+# ======================
+# MAIN
+# ======================
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

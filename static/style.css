@@ -12,7 +12,7 @@ body, html {
    
   }
   
-  .navbar {
+  /* .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -54,7 +54,93 @@ body, html {
   
   .navbar .menu button:hover {
     background-color: #fff;
+  } 
+  
+
+/* Navbar Styling */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #063b73;
+  color: #fff;
+  position: relative; /* Ensures proper positioning of elements */
+}
+
+.navbar .logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* Hamburger Menu Button */
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1000; /* Ensure it stays above other elements */
+}
+
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background-color: #fff;
+  margin: 3px 0;
+}
+
+/* Dropdown Menu */
+.menu {
+  display: none; /* Hidden by default for mobile */
+  flex-direction: column;
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background-color: #444;
+  padding: 10px 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  z-index: 999;
+}
+
+.menu li {
+  list-style: none;
+  margin: 10px 0;
+}
+
+.menu a, .menu button {
+  color: #fff;
+  text-decoration: none;
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Adjust for Larger Screens */
+@media (min-width: 768px) {
+  .menu {
+      display: flex; /* Horizontal layout for larger screens */
+      flex-direction: row;
+      position: static;
+      background: none;
+      box-shadow: none;
+      border-radius: 0;
+      padding: 0;
   }
+
+  .menu li {
+      margin: 0 15px;
+  }
+
+  .hamburger {
+      display: none; /* Hide hamburger menu for larger screens */
+  }
+}
+
+
+
   
   /* Form Popup */
   .form-popup {
@@ -67,11 +153,6 @@ body, html {
     background-color: rgba(0, 0, 0, 0.7);
     justify-content: center;
     align-items: center;
-<<<<<<< HEAD
-=======
-    align-content: center;
-    align-self: center;
->>>>>>> 62dbd262ef238130c723972dfbaddea277b6ba7b
   }
   
   .form-content {
@@ -301,4 +382,86 @@ body, html {
     opacity: 1;
   }
 }
+p {
+  color: #333; /* Dark gray for better contrast */
+  font-size: 16px; /* Adjust the font size for readability */
+  line-height: 1.6; /* Add spacing between lines */
+  font-weight: 500; /* Slightly bolder text for emphasis */
+}
+.welcome p {
+  color: #333;
+  font-size: 20px;
+  line-height: 1.6;
+  font-weight: 500;
+}
 
+/* Adjust Info Modal for Right Corner */
+#info-modal {
+  display:contents;
+  position: fixed;
+  top: 50px;
+  margin-left: 77%;
+  left: 0px; /* Distance from the top */
+  right:0px; /* Distance from the right */
+  width: 300px; /* Maintain existing width */
+  height: auto; /* Adjust height as needed */
+  background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent white background */
+  border-radius: 40px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000; /* Ensure it stays on top of other elements */
+  padding: 20px;
+}
+
+/* Adjust Form Content for Info Modal */
+#info-modal .form-content {
+  background-color: transparent; /* Transparent to align with modal */
+  padding: 0; /* Remove additional padding */
+  text-align: left; /* Align text to the left for better readability */
+  color: #333; /* Keep consistent text color */
+  position: relative;
+}
+
+/* Adjust Close Button for Info Modal */
+#info-modal .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+/* Add animation for the Info Modal */
+@keyframes slideIn {
+  from {
+      transform: translateY(-100%);
+      opacity: 0;
+  }
+  to {
+      transform: translateY(0);
+      opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+      transform: translateY(0);
+      opacity: 1;
+  }
+  to {
+      transform: translateY(-100%);
+      opacity: 0;
+  }
+}
+
+/* Add active class for animation */
+#info-modal.active {
+  display: flex; /* Make sure modal is visible */
+  animation: slideIn 0.5s ease-in-out forwards;
+}
+
+/* Add closing animation */
+#info-modal.closing {
+  animation: slideOut 0.5s ease-in-out forwards;
+  pointer-events: none;
+}

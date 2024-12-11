@@ -1,10 +1,10 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session, flash
 import firebase_admin
-<<<<<<< HEAD
+#<<<<<<< HEAD
 from firebase_admin import credentials, db
-=======
+#=======
 from firebase_admin import credentials, db,auth
->>>>>>> 62dbd262ef238130c723972dfbaddea277b6ba7b
+#>>>>>>> 62dbd262ef238130c723972dfbaddea277b6ba7b
 from werkzeug.security import generate_password_hash, check_password_hash
 from threading import Timer
 import requests
@@ -64,6 +64,10 @@ def signup():
 
         # Push data to Firebase
         ref.push(user_data)
+        # Set session variable
+        session['user_name'] = name
+        session['user_email'] = email
+        session['user_mobile'] = mobile
 
         # Redirect to home page with login popup
         flash("Registration successful! Please log in.", "success")
@@ -76,10 +80,10 @@ def signup():
 
 
 
-<<<<<<< HEAD
+#<<<<<<< HEAD
 
-=======
->>>>>>> 62dbd262ef238130c723972dfbaddea277b6ba7b
+#=======
+#>>>>>>> 62dbd262ef238130c723972dfbaddea277b6ba7b
 @app.route('/login', methods=['POST'])
 def login():
     """Handles user login."""
@@ -95,10 +99,17 @@ def login():
         ref = db.reference('users')
         users = ref.get()
 
+        if not users:
+            flash("No users found in the database. Please sign up first.", "error")
+            return redirect(url_for('index'))
+
         # Verify credentials
-        for user in users.values():
+        for key, user in users.items():
             if user.get('email') == email and check_password_hash(user.get('password'), password):
+                # Store user details in session
                 session['user_name'] = user.get('name')
+                session['user_email'] = user.get('email')
+                session['user_mobile'] = user.get('mobile')
                 flash(f"Welcome, {user.get('name')}!", "success")
                 return redirect(url_for('message'))
 
@@ -106,7 +117,7 @@ def login():
         return redirect(url_for('index'))
 
     except Exception as e:
-        print(f"Login error: {e}")
+        app.logger.error(f"Login error: {e}")
         flash("An error occurred during login. Please try again.", "error")
         return redirect(url_for('index'))
 
@@ -114,8 +125,10 @@ def login():
 @app.route('/message')
 def message():
     try:
-        # Fetch user name from session
-        user_name = session.get('user_name', None)
+         # Fetch user details from session
+        user_name = session.get('user_name', 'Guest')
+        user_email = session.get('user_email', 'Not available')
+        user_mobile = session.get('user_mobile', 'Not available')
         if not user_name:
             app.logger.warning("User not logged in. Redirecting to login page.")
             return redirect(url_for('index'))
@@ -138,7 +151,14 @@ def message():
         # Debugging output
         app.logger.info(f"Displaying message page for user: {user_name}")
 
-        return render_template('message.html', user_name=user_name, gps_data=coordinates)
+        # Pass user and GPS data to the template
+        return render_template(
+            'message.html',
+            user_name=user_name,
+            user_email=user_email,
+            user_mobile=user_mobile,
+            gps_data=coordinates
+        )
     except Exception as e:
         app.logger.error(f"Error in message route: {e}")
         return render_template('message.html', error="Could not load data.")

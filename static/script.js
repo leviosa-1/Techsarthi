@@ -87,12 +87,27 @@ async function refreshCoordinates() {
   document.getElementById("coordinates").innerText = `Latitude: ${data.latitude}, Longitude: ${data.longitude}`;
 }
 
+function toggleMenu() {
+  const menu = document.querySelector('.menu');
+  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+}
+
+function openInfo() {
+  document.getElementById('info-modal').style.display = 'block';
+}
+
+// Close the Info Modal
+function closeInfo() {
+  document.getElementById('info-modal').style.display = 'none';
+}
+
+
+
 // Auto-refresh coordinates every 5 seconds
 setInterval(refreshCoordinates, 5000);
 
 // Send message to the backend
 async function sendMessage() {
-<<<<<<< HEAD
   const message = document.getElementById("message-input").value;
   if (!message) {
     alert("Please enter a message!");
@@ -113,35 +128,21 @@ async function sendMessage() {
   } catch (error) {
     console.error("Error sending message:", error);
     alert("An error occurred while sending the message.");
-=======
-  const message = document.getElementById('message-input').value;
-
-  if (message.trim() === "") {
-      alert("Please enter a message before submitting!");
-      return;
   }
+}
 
-  // Send the message to the server
-  const response = await fetch('/send', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ message })
-  });
+function openInfo() {
+  const infoModal = document.getElementById('info-modal');
+  infoModal.classList.remove('closing'); // Remove closing animation class
+  infoModal.classList.add('active'); // Add active class for slide-in animation
+  infoModal.style.display = 'flex'; // Ensure modal is visible
+}
 
-  // Handle the server's response
-  const result = await response.json();
-
-  if (response.ok) {
-      // Show the message pop-up
-      const popup = document.getElementById("message-popup");
-      popup.style.display = "flex";
-
-      // Clear the input field
-      document.getElementById('message-input').value = "";
-  } else {
-      alert("Failed to send message: " + result.message);
->>>>>>> 62dbd262ef238130c723972dfbaddea277b6ba7b
-  }
+function closeInfo() {
+  const infoModal = document.getElementById('info-modal');
+  infoModal.classList.remove('active'); // Remove active animation class
+  infoModal.classList.add('closing'); // Add closing animation class
+  setTimeout(() => {
+      infoModal.style.display = 'none'; // Hide the modal after animation
+  }, 500); // Match the animation duration (0.5s)
 }

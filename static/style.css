@@ -153,29 +153,75 @@ color: white;
 
 /* Welcome Section */
 .welcome {
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-text-align: center;
-height: 100vh;
-color: white;
-margin-top: -120px;
-margin-top: -80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100vh;
+  background: linear-gradient(to bottom, #318CE7, #00509E); /* Add a gradient background */
+  color: white;
+  animation: fadeIn 1.5s ease-in-out;
 }
 
+/* Heading Animation */
 .welcome h1 {
-color: #318CE7;
-font-size: 3rem;
-margin-bottom: 20px;
+  color: #ffffff; /* Bright white for contrast */
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  animation: textSlideIn 1.2s ease-in-out;
 }
 
+/* Paragraph Animation */
 .welcome p {
-font-size: 1.2rem;
-line-height: 1.5;
-max-width: 1600px;
-color: #cccccc  ;
+  font-size: 1.3rem;
+  line-height: 1.8;
+  max-width: 800px; /* Limit the paragraph width */
+  color: #f1f1f1;
+  animation: fadeInDelay 2s ease-in-out;
 }
+
+/* Add some glow effect to the welcome heading */
+.welcome h1:hover {
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.6);
+  transition: text-shadow 0.5s ease-in-out;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInDelay {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes textSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
 /* Message Section */
 .message-section {
@@ -234,47 +280,40 @@ transition: 0.3s;
 background-color:#002244;
 }
 
-/* Pop-Up */
-.message-popup {
-display: none;
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-background-color: rgba(0, 0, 0, 0.6);
-justify-content: center;
-align-items: center;
-}
-
-.popup-content {
-background-color: white;
-color: #002244;
-padding: 20px;
-border-radius: 10px;
-text-align: center;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-animation: scaleUp 0.5s ease-in-out;
-}
-
-.popup-content h3 {
-margin-bottom: 20px;
-}
-
-.popup-content button {
-padding: 10px 20px;
-background-color: #002244;
-color: white;
-border: none;
-border-radius: 5px;
-cursor: pointer;
-font-size: 1rem;
-transition: 0.3s;
-}
 
 .popup-content button:hover {
 background-color: #002244;
 }
+.message-popup {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  z-index: 1000;
+}
+
+.popup-content {
+  text-align: center;
+}
+
+.popup-content h3 {
+  margin-bottom: 20px;
+}
+
+.popup-content button {
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 
 /* Animations */
 @keyframes fadeIn {
@@ -327,34 +366,62 @@ color: white;
 }
 
 /* Basic styling for the flash messages */
-      #flash-messages ul {
-          list-style: none;
-          padding: 0;
-          margin: 0;
-      }
+     /* Flash Message Alert */
+#flash-messages {
+  position: fixed;
+  top: 0; /* Stick to the top */
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  text-align: center;
+  animation: slideDown 0.5s ease-out, fadeOut 3s ease-in-out 2.5s forwards;
+}
 
-      #flash-messages li {
-          background-color: #f8d7da;
-          color: #721c24;
-          padding: 10px;
-          margin-bottom: 10px;
-          border: 1px solid #f5c6cb;
-          border-radius: 5px;
-          display: inline-block;
-          width: 100%;
-      }
+#flash-messages ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 
-      #flash-messages li.success {
-          background-color: #d4edda;
-          color: #155724;
-          border-color: #c3e6cb;
-      }
+#flash-messages li {
+  display: inline-block;
+  width: 100%;
+  padding: 15px;
+  font-size: 1rem;
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-      #flash-messages li.error {
-          background-color: #f8d7da;
-          color: #721c24;
-          border-color: #f5c6cb;
-      }
+#flash-messages li.success {
+  background-color: #28a745; /* Success green */
+}
+
+#flash-messages li.error {
+  background-color: #dc3545; /* Error red */
+}
+
+/* Slide-in animation */
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Fade-out animation */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 
       .btn-165 {
         padding: 10px 25px;

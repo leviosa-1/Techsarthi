@@ -54,7 +54,7 @@ def signup():
         # Check if CAPTCHA verification was successful
         if not captcha_result.get('success'):
             flash("CAPTCHA verification failed. Please try again.", "error")
-            return redirect(url_for('index', show_login_popup='true'))
+            return redirect(url_for('index', show_register_popup='true'))  # Redirect to registration popup
 
         # Hash the password for security
         hashed_password = generate_password_hash(password)
@@ -91,6 +91,7 @@ def signup():
         print(f"Error during signup: {e}")
         flash("An error occurred during registration. Please try again.", "error")
         return redirect(url_for('index'))
+
 
 
 @app.route('/login', methods=['POST'])

@@ -1,31 +1,36 @@
 // Function to open the forms (login or register)
 function openForm(formId) {
-  document.getElementById(`${formId}-form`).style.display = "block";
+  const loginForm = document.getElementById("login-form");
+  const registerForm = document.getElementById("register-form");
+  const backdrop = document.getElementById("form-backdrop");
+
+  if (formId === "login") {
+    loginForm.style.display = "block";
+    registerForm.style.display = "none"; // Hide the other form
+  } else if (formId === "register") {
+    registerForm.style.display = "block";
+    loginForm.style.display = "none"; // Hide the other form
+  }
+
+  backdrop.style.display = "block"; // Show the backdrop
 }
+
+// Function to close the forms (login or register)
+function closeForm(formId) {
+  const backdrop = document.getElementById("form-backdrop");
+
+  if (formId === "login") {
+    document.getElementById("login-form").style.display = "none";
+  } else if (formId === "register") {
+    document.getElementById("register-form").style.display = "none";
+  }
+
+  // Hide the backdrop when closing the form
+  backdrop.style.display = "none";
+}
+
+
 // Send message to the backend
-// async function sendMessage() {
-//   const message = document.getElementById("message-input").value;
-//   if (!message) {
-//     alert("Please enter a message!");
-//     return;
-//   }
-
-//   try {
-//     const response = await fetch("/send", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({ message }),
-//     });
-
-//     const result = await response.json();
-//     alert(result.message);
-//   } catch (error) {
-//     console.error("Error sending message:", error);
-//     alert("An error occurred while sending the message.");
-//   }
-// }
 async function sendMessage() {
   const message = document.getElementById('message-input').value;
 
@@ -63,21 +68,6 @@ async function sendMessage() {
       alert("Failed to send message due to a network error: " + error.message);
   }
 }
-// Function to show the popup
-function showPopup() {
-  const popup = document.getElementById('message-popup');
-  popup.style.display = 'block';
-}
-
-// Function to close the popup
-function closePopup() {
-  const popup = document.getElementById('message-popup');
-  popup.style.display = 'none';
-}
-// Function to close the forms (login or register)
-function closeForm(formId) {
-  document.getElementById(`${formId}-form`).style.display = "none";
-}
 
 // Check if the login popup should be shown
 const showLoginPopup = JSON.parse(document.getElementById('show-login-popup').textContent);
@@ -86,7 +76,6 @@ if (showLoginPopup) {
 } else {
   closeForm("login");
 }
-
 
 // Typing effect for the user's name on the homepage
 document.addEventListener("DOMContentLoaded", () => {
@@ -171,6 +160,5 @@ function closeInfo() {
   infoModal.classList.add('closing'); // Add closing animation class
   setTimeout(() => {
       infoModal.style.display = 'none'; // Hide the modal after animation
-  }, 500); // Match the animation duration (0.5s)
+  }, 500); // Match the animation duration (0.5s)
 }
-

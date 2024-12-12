@@ -6,18 +6,15 @@ body, html {
   font-family: Arial, sans-serif;
 }
 
-/* Body & Navbar */
-body {
- background-color: white;
- 
-}
+
+
 
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: #318CE7;
+  background-color: black;
 }
 
 .navbar .logo {
@@ -62,7 +59,7 @@ body {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); /* Center the element */    
+  transform: translate(-50%, -50%);
   width: 400px; /* Adjust the width as needed */
   padding: 2px; /* Optional padding for better design */
   background-color: white; /* Set a background color */
@@ -107,38 +104,53 @@ body {
   background-color: #00509e;
 }
 
+/* Backdrop for form popup */
+.form-backdrop {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent dark overlay */
+  backdrop-filter: blur(5px); /* Apply blur effect */
+  z-index: 999; /* Ensure it's below the form popup */
+}
+
 /* Flash Message Styling */
 .flash-message {
-position: fixed;
-top: 10px;
-left: 50%;
-transform: translateX(-50%);
-z-index: 1000;
-padding: 15px 20px;
-border-radius: 5px;
-font-size: 1rem;
-display: none;
-animation: fadeInOut 4s ease-in-out;
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  padding: 15px 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  display: none;
+  animation: fadeInOut 4s ease-in-out;
+  width: 80%; /* Adjust this value to better fit within the screen width */
 }
 
 .flash-message.success {
-background-color: #4CAF50;
-color: white;
+  background-color: #4CAF50;
+  color: white;
 }
 
 .flash-message.error {
-background-color: #f44336;
-color: white;
+  background-color: #f44336;
+  color: white;
 }
 
 @keyframes fadeInOut {
-0%, 100% {
-  opacity: 0;
+  0%, 100% {
+    opacity: 0;
+  }
+  10%, 90% {
+    opacity: 1;
+  }
 }
-10%, 90% {
-  opacity: 1;
-}
-}
+
 
 
 /* Close Button */
@@ -151,7 +163,14 @@ color: white;
   color: #333;
 }
 
-/* Welcome Section */
+#welcome{
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Welcome Section */  
 .welcome {
   display: flex;
   flex-direction: column;
@@ -159,13 +178,15 @@ color: white;
   align-items: center;
   text-align: center;
   height: 100vh;
-  background: linear-gradient(to bottom, #318CE7, #00509E); /* Add a gradient background */
+  background: rgb(0,0,0);
+background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(38,157,255,1) 95%);
   color: white;
-  animation: fadeIn 1.5s ease-in-out;
+  
 }
 
 /* Heading Animation */
 .welcome h1 {
+  display: flex;
   color: #ffffff; /* Bright white for contrast */
   font-size: 3.5rem;
   margin-bottom: 20px;
@@ -183,6 +204,7 @@ color: white;
   color: #f1f1f1;
   animation: fadeInDelay 2s ease-in-out;
 }
+
 
 /* Add some glow effect to the welcome heading */
 .welcome h1:hover {
@@ -222,39 +244,46 @@ color: white;
   }
 }
 
-
+#content {
+  height: 780px;
+}
 /* Message Section */
 .message-section {
 display: flex;
 justify-content: center;
 align-items: center;
 height: 100vh;
-background-color: #318CE7; /* Dark blue */
+background: rgb(0,0,0);
+background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(38,157,255,1) 95%);
 color: white;
 margin-top: -70px;
 }
 
 .message-container {
-width: 70%;
+margin-right: 950px;  
+width: 500px;
+height: 230px;
 max-width: 800px;
 background-color: white;
 color: #003366;
 border-radius: 10px;
 padding: 20px;
 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-text-align: center;
 animation: fadeIn 1s ease-in-out;
 }
 
 .message-container h2 {
 margin-bottom: 20px;
+margin-left: 150px;
 }
 
 #map {
-height: 500px; /* Map height */
-width: 100%;   /* Map width */
+top: -700px; 
+left: 800px;
+border-radius: 5%;
+height: 450px; /* Map height */
+width: 50%;   /* Map width */
 }
-
 
 .message-container textarea {
 width: 90%;
@@ -266,6 +295,10 @@ resize: none;
 }
 
 .message-container button {
+  align-items: center;
+  align-self: center;
+  align-content: center;
+  margin-left: 200px;
 padding: 10px 20px;
 background-color: #002244;
 color: white;
@@ -537,3 +570,158 @@ animation: slideIn 0.5s ease-in-out forwards;
 animation: slideOut 0.5s ease-in-out forwards;
 pointer-events: none;
 }
+
+.footer {
+  background: linear-gradient(135deg, #001A6E, #074799);
+  color: white;
+  padding: 3rem 5%;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.footer-section {
+  flex: 1;
+  margin-right: 2rem;
+  min-width: 250px;
+}
+
+.footer-section:last-child {
+  margin-right: 0;
+}
+
+.footer-section h3 {
+  border-bottom: 2px solid white;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.footer-section ul {
+  list-style: none;
+}
+
+.footer-section ul li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-section ul li a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+  color: #f0f0f0;
+  text-decoration: underline;
+}
+
+.social-icons {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-icons a {
+  color: white;
+  font-size: 1.5rem;
+  transition: color 0.3s ease;
+}
+
+.social-icons a:hover {
+  color: #f0f0f0;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,0.2);
+  margin-top: 2rem;
+}
+
+@media screen and (max-width: 768px) {
+  .footer-content {
+      flex-direction: column;
+  }
+
+  .footer-section {
+      margin-right: 0;
+      margin-bottom: 1.5rem;
+  }
+}
+/* From Uiverse.io by vinodjangid07 */ 
+.card {
+  width: fit-content;
+  height: fit-content;
+  background-color: linear-gradient(135deg, #001A6E, #074799);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 25px 25px;
+  gap: 20px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.055);
+}
+
+/* for all social containers*/
+.socialContainer {
+  width: 52px;
+  height: 52px;
+  background-color: rgb(44, 44, 44);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition-duration: .3s;
+}
+/* instagram*/
+.containerOne:hover {
+  background-color: #d62976;
+  transition-duration: .3s;
+}
+/* twitter*/
+.containerTwo:hover {
+  background-color: #00acee;
+  transition-duration: .3s;
+}
+/* linkdin*/
+.containerThree:hover {
+  background-color: #0072b1;
+  transition-duration: .3s;
+}
+/* Whatsapp*/
+.containerFour:hover {
+  background-color: #128C7E;
+  transition-duration: .3s;
+}
+
+.socialContainer:active {
+  transform: scale(0.9);
+  transition-duration: .3s;
+}
+
+.socialSvg {
+  width: 17px;
+}
+
+.socialSvg path {
+  fill: rgb(255, 255, 255);
+}
+
+.socialContainer:hover .socialSvg {
+  animation: slide-in-top 0.3s both;
+}
+
+@keyframes slide-in-top {
+  0% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+

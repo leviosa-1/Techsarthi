@@ -1,119 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tech Sarthi</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body data-show-login-popup="{{ show_login_popup }}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tech Sarthi</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body data-show-login-popup="{{ show_login_popup }}">
+    <div id="flash-messages">
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %}
+      <ul>
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %} {% endwith %}
+    </div>
 
-  <div id="flash-messages">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul>
-                {% for category, message in messages %}
-                    <li class="{{ category }}">{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
-</div>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="logo">Tech Sarthi</div>
+      <ul class="menu">
+        <li><a href="#about">About</a></li>
+        <li><button onclick="openForm('register')">Register</button></li>
+        <li><button onclick="openForm('login')">Login</button></li>
+      </ul>
+    </nav>
+    <div id="particles-js">
+      <div class="ml10">
+        <span class="letters">Tech Sarthi</span>
+      </div>
+      <div class="subtitle">
+        <span class="letters">Guiding the Way, Empowering Every Step</span>
+      </div>
+    </div>
+    <!-- Register Form -->
+    <div id="register-form" class="form-popup">
+      <div class="form-content">
+        <span class="close" onclick="closeForm('register')">&times;</span>
+        <h2>Register</h2>
+        <form method="POST" action="/signup">
+          <input type="text" name="name" placeholder="Name" required />
+          <input type="number" name="mobile" placeholder="Mobile" required />
+          <input type="email" name="email" placeholder="Email" required />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+          />
+          <!-- Google reCAPTCHA -->
+          <div
+            class="g-recaptcha"
+            data-sitekey="6Lc045gqAAAAACttbz0e36fLXYFoZG1Mzr-gUI4P"
+          ></div>
 
+          <button type="submit">Register</button>
+          <button class="btn-165">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 262">
+              <path
+                fill="#4285F4"
+                d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"
+              ></path>
+              <path
+                fill="#34A853"
+                d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055-34.523 0-63.824-22.773-74.269-54.25l-1.531.13-40.298 31.187-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1"
+              ></path>
+              <path
+                fill="#FBBC05"
+                d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82 0-8.994 1.595-17.697 4.206-25.82l-.073-1.73L15.26 71.312l-1.335.635C5.077 89.644 0 109.517 0 130.55s5.077 40.905 13.925 58.602l42.356-32.782"
+              ></path>
+              <path
+                fill="#EB4335"
+                d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"
+              ></path>
+            </svg>
+            <span>Login with Google</span>
+          </button>
+        </form>
+      </div>
+    </div>
 
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="logo">Tech Sarthi</div>
-    <ul class="menu">
-      <li><a href="#about">About</a></li>
-      <li><button onclick="openForm('register')">Register</button></li>
-      <li><button onclick="openForm('login')">Login</button></li>
-    </ul>
-  </nav>
-  <div id="particles-js">
-    <ul>
-      <li><a href="#">Tech Sarthi</a></li>
-      <li><a href="#">Advance Blind Stick</a></li>
-    </ul>
-  </div>
-  <!-- Register Form -->
-  <div id="register-form" class="form-popup">
-    <div class="form-content">
-      <span class="close" onclick="closeForm('register')">&times;</span>
-      <h2>Register</h2>
-      <form method="POST" action="/signup">
-        <input type="text" name="name" placeholder="Name" required>
-        <input type="number" name="mobile" placeholder="Mobile" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <!-- Google reCAPTCHA -->
-    <div class="g-recaptcha" data-sitekey="6Lc045gqAAAAACttbz0e36fLXYFoZG1Mzr-gUI4P"></div>
-    
-    <button type="submit">Register</button>
-        <button class="btn-165">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 262">
-              <path fill="#4285F4" d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"></path>
-              <path fill="#34A853" d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055-34.523 0-63.824-22.773-74.269-54.25l-1.531.13-40.298 31.187-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1"></path>
-              <path fill="#FBBC05" d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82 0-8.994 1.595-17.697 4.206-25.82l-.073-1.73L15.26 71.312l-1.335.635C5.077 89.644 0 109.517 0 130.55s5.077 40.905 13.925 58.602l42.356-32.782"></path>
-              <path fill="#EB4335" d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"></path>
-          </svg>
-          <span>Login with Google</span>
-      </button>
+    <!-- Login Form -->
+    <div id="login-form" class="form-popup">
+      <div class="form-content">
+        <span class="close" onclick="closeForm('login')">&times;</span>
+        <h2>Login</h2>
+        <form method="POST" action="/login">
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Enter your password"
+            required
+          />
+          <button type="submit">Login</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Backdrop for form popup -->
+    <div id="form-backdrop" class="form-backdrop"></div>
+
+    <!-- particles.js lib -->
+    <script src="http://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <!-- stats.js lib -->
+    <script src="http://threejs.org/examples/js/libs/stats.min.js"></script>
+    <script>
       
-      </form>
-    </div>
-  </div>
+      particlesJS("particles-js", {
+        particles: {
+          number: { value: 80, density: { enable: true, value_area: 800 } },
+          color: { value: "#ffffff" },
+          shape: {
+            type: "circle",
+            stroke: { width: 0, color: "#000000" },
+            polygon: { nb_sides: 5 },
+            image: { src: "img/github.svg", width: 100, height: 100 },
+          },
+          opacity: {
+            value: 0.5,
+            random: false,
+            anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false },
+          },
+          size: {
+            value: 3,
+            random: true,
+            anim: { enable: false, speed: 40, size_min: 0.1, sync: false },
+          },
+          line_linked: {
+            enable: true,
+            distance: 150,
+            color: "#ffffff",
+            opacity: 0.4,
+            width: 1,
+          },
+          move: {
+            enable: true,
+            speed: 6,
+            direction: "none",
+            random: false,
+            straight: false,
+            out_mode: "out",
+            bounce: false,
+            attract: { enable: false, rotateX: 600, rotateY: 1200 },
+          },
+        },
+        interactivity: {
+          detect_on: "canvas",
+          events: {
+            onhover: { enable: true, mode: "repulse" },
+            onclick: { enable: true, mode: "push" },
+            resize: true,
+          },
+          modes: {
+            grab: { distance: 400, line_linked: { opacity: 1 } },
+            bubble: {
+              distance: 400,
+              size: 40,
+              duration: 2,
+              opacity: 8,
+              speed: 3,
+            },
+            repulse: { distance: 200, duration: 0.4 },
+            push: { particles_nb: 4 },
+            remove: { particles_nb: 2 },
+          },
+        },
+        retina_detect: true,
+      });
+      var count_particles, stats, update;
+      stats = new Stats();
+      stats.setMode(0);
+      stats.domElement.style.position = "absolute";
+      stats.domElement.style.left = "0px";
+      stats.domElement.style.top = "0px";
+      document.body.appendChild(stats.domElement);
+      count_particles = document.querySelector(".js-count-particles");
+      update = function () {
+        stats.begin();
+        stats.end();
+        if (
+          window.pJSDom[0].pJS.particles &&
+          window.pJSDom[0].pJS.particles.array
+        ) {
+          count_particles.innerText =
+            window.pJSDom[0].pJS.particles.array.length;
+        }
+        requestAnimationFrame(update);
+      };
+      requestAnimationFrame(update);
+    </script>
+    <!-- Your custom script to configure particles.js -->
+    <script src="script.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script>// Wrap every letter in a span
+       // Wrapping each letter of both text elements
+       var textWrapper1 = document.querySelector('.ml10 .letters');
+       textWrapper1.innerHTML = textWrapper1.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
+       
+       var textWrapper2 = document.querySelector('.subtitle .letters');
+       textWrapper2.innerHTML = textWrapper2.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
+       
+       anime.timeline()
+         // First Animation: Tech Sarthi
+         .add({
+           targets: '.ml10 .letter',
+           rotateY: [-90, 0],
+           duration: 1300,
+           delay: (el, i) => 45 * i,
+           opacity: [0, 1] // Ensures smooth visibility
+         })
+         // Second Animation: Subtitle
+         .add({
+           targets: '.subtitle',
+           opacity: [0, 1], // Ensure subtitle appears
+           duration: 500,
+           offset: '+=300', // Start a bit after the first animation
+         })
+         .add({
+           targets: '.subtitle .letter',
+           rotateY: [-90, 0],
+           duration: 1300,
+           delay: (el, i) => 45 * i,
+           opacity: [0, 1], // Animate letters into visibility
+         });
+       
+      </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Get the `show_login_popup` value from a data attribute
+        const showLoginPopup = document.body.dataset.showLoginPopup === "true";
 
-  <!-- Login Form -->
-  <div id="login-form" class="form-popup">
-    <div class="form-content">
-      <span class="close" onclick="closeForm('login')">&times;</span>
-      <h2>Login</h2>
-      <form method="POST" action="/login">
-        <input type="email" name="email" placeholder="Enter your email" required>
-        <input type="password" name="password" placeholder="Enter your password" required>
-        <button type="submit">Login</button>
-      </form>
-    </div>
-  </div>  
+        // Check if the user is already logged in
+        const userName = sessionStorage.getItem("userName");
 
-  <!-- Backdrop for form popup -->
-<div id="form-backdrop" class="form-backdrop"></div>
+        // Show login popup only if user is not logged in and `show_login_popup` is true
+        if (showLoginPopup && !userName) {
+          openForm("login");
+        }
+      });
 
-<!-- particles.js lib -->
-<script src="http://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    
-<!-- stats.js lib -->
-<script src="http://threejs.org/examples/js/libs/stats.min.js"></script>
-<script>particlesJS("particles-js", {"particles":{"number":{"value":80,"density":{"enable":true,"value_area":800}},"color":{"value":"#ffffff"},"shape":{"type":"circle","stroke":{"width":0,"color":"#000000"},"polygon":{"nb_sides":5},"image":{"src":"img/github.svg","width":100,"height":100}},"opacity":{"value":0.5,"random":false,"anim":{"enable":false,"speed":1,"opacity_min":0.1,"sync":false}},"size":{"value":3,"random":true,"anim":{"enable":false,"speed":40,"size_min":0.1,"sync":false}},"line_linked":{"enable":true,"distance":150,"color":"#ffffff","opacity":0.4,"width":1},"move":{"enable":true,"speed":6,"direction":"none","random":false,"straight":false,"out_mode":"out","bounce":false,"attract":{"enable":false,"rotateX":600,"rotateY":1200}}},"interactivity":{"detect_on":"canvas","events":{"onhover":{"enable":true,"mode":"repulse"},"onclick":{"enable":true,"mode":"push"},"resize":true},"modes":{"grab":{"distance":400,"line_linked":{"opacity":1}},"bubble":{"distance":400,"size":40,"duration":2,"opacity":8,"speed":3},"repulse":{"distance":200,"duration":0.4},"push":{"particles_nb":4},"remove":{"particles_nb":2}}},"retina_detect":true});var count_particles, stats, update; stats = new Stats; stats.setMode(0); stats.domElement.style.position = 'absolute'; stats.domElement.style.left = '0px'; stats.domElement.style.top = '0px'; document.body.appendChild(stats.domElement); count_particles = document.querySelector('.js-count-particles'); update = function() { stats.begin(); stats.end(); if (window.pJSDom[0].pJS.particles && window.pJSDom[0].pJS.particles.array) { count_particles.innerText = window.pJSDom[0].pJS.particles.array.length; } requestAnimationFrame(update); }; requestAnimationFrame(update);;</script>
-<!-- Your custom script to configure particles.js -->
-<script src="script.js"></script>
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // Get the `show_login_popup` value from a data attribute
-      const showLoginPopup = document.body.dataset.showLoginPopup === "true";
-  
-      // Check if the user is already logged in
-      const userName = sessionStorage.getItem("userName");
-  
-      // Show login popup only if user is not logged in and `show_login_popup` is true
-      if (showLoginPopup && !userName) {
-        openForm("login");
-      }
-    });
+      // Get the flash message container
+      const flashMessages = document.querySelectorAll("#flash-messages li");
 
-    // Get the flash message container
- const flashMessages = document.querySelectorAll('#flash-messages li');
-        
- // Loop through each message and set a timeout to hide it
- flashMessages.forEach((msg) => {
-     setTimeout(() => {
-         msg.style.display = 'none';
-     }, 3000);  // Adjust time (5000ms = 5 seconds)
- });
- 
-  </script>
-</body>
+      // Loop through each message and set a timeout to hide it
+      flashMessages.forEach((msg) => {
+        setTimeout(() => {
+          msg.style.display = "none";
+        }, 3000); // Adjust time (5000ms = 5 seconds)
+      });
+    </script>
+  </body>
 </html>

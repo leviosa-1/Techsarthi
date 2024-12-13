@@ -110,6 +110,17 @@ function updateLocation(latitude, longitude) {
     .openPopup();
 }
 
+// Function to show the popup
+function showPopup() {
+  const popup = document.getElementById('message-popup');
+  popup.style.display = 'block';
+}
+
+// Function to close the popup
+function closePopup() {
+  const popup = document.getElementById('message-popup');
+  popup.style.display = 'none';
+}
 // Example of using a function to populate a message box or map with live data
 document.getElementById('location-button').addEventListener('click', function() {
   // Fetch new coordinates or other data when the user clicks

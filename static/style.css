@@ -1,7 +1,4 @@
 
-
-
-
 /* Reset default margins */
 body, html {
   margin: 0;
@@ -11,6 +8,49 @@ body, html {
 background-color: black;  overflow-x: hidden;
   color: white;
 }
+
+.ml10 {
+  position: relative;
+  left: 40px;
+  top: 270px;
+  font-weight: 900;
+  font-size: 2.5em;
+}
+
+.ml10 .text-wrapper {
+  position: relative;
+  display: inline-block;
+  padding-top: 0.2em;
+  padding-right: 0.05em;
+  padding-bottom: 0.1em;
+  overflow: hidden;
+}
+
+.ml10 .letter {
+  display: inline-block;
+  line-height: 1em;
+  transform-origin: 0 0;
+}
+
+.subtitle {
+  position: absolute; /* Position the subtitle relative to the page */
+  top: 330px; /* Set the correct starting position */
+  left: 40px; /* Align with the animation */
+  font-size: 1.5em;
+  font-weight: 500;
+  display: inline-block;
+  opacity: 0; /* Make it invisible at first */
+  transition: opacity 0.2s ease-in; /* Smooth appearance */
+}
+
+.subtitle .letter {
+  display: inline-block; /* Ensure inline-block for smooth animation */
+  position: relative; /* Position relative for animation effects */
+  font-weight: 900;
+  font-size: 1em;
+  opacity: 0; /* Start as invisible */
+}
+
 
 /* ---- particles.js container ---- */
 #particles-js {
@@ -796,4 +836,3 @@ pointer-events: none;
     opacity: 1;
   }
 }
-

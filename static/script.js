@@ -77,23 +77,6 @@ if (showLoginPopup) {
   closeForm("login");
 }
 
-// Typing effect for the user's name on the homepage
-document.addEventListener("DOMContentLoaded", () => {
-  const userName = localStorage.getItem("userName") || "User"; // Default to 'User' if no name is saved
-  const userNameElement = document.getElementById("user-name");
-  let i = 0;
-
-  function typeWriter() {
-    if (i < userName.length) {
-      userNameElement.textContent += userName.charAt(i);
-      i++;
-      setTimeout(typeWriter, 250); // Adjust typing speed here
-    }
-  }
-
-  typeWriter(); // Start the typing animation
-});
-
 // Function to update the location on the message page (if applicable)
 function updateLocation(latitude, longitude) {
   // Example using OpenStreetMap or Google Maps to update location on a map
@@ -153,11 +136,6 @@ if (logoutButton) {
   logoutButton.addEventListener('click', logout);
 }
 
-function toggleMenu() {
-  const menu = document.querySelector('.menu');
-  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-}
-
 function openInfo() {
   const infoModal = document.getElementById('info-modal');
   infoModal.classList.remove('closing'); // Remove closing animation class
@@ -174,3 +152,7 @@ function closeInfo() {
   }, 500); // Match the animation duration (0.5s)
 }
 
+function toggleMenu() {
+  const menu = document.querySelector('.menu');
+  menu.classList.toggle('active');
+}

@@ -1,11 +1,12 @@
-
 /* Reset default margins */
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   height: 100%;
   font-family: Arial, sans-serif;
-background-color: black;  overflow-x: hidden;
+  background-color: black;
+  overflow-x: hidden;
   color: white;
 }
 
@@ -51,14 +52,17 @@ background-color: black;  overflow-x: hidden;
   opacity: 0; /* Start as invisible */
 }
 
-
 /* ---- particles.js container ---- */
 #particles-js {
   overflow: hidden;
   position: absolute;
   width: 100%;
   height: 100%;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(38, 157, 255, 1) 95%);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(38, 157, 255, 1) 95%
+  );
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 50% 50%;
@@ -71,7 +75,7 @@ background-color: black;  overflow-x: hidden;
   top: 48px;
   left: 0;
   width: 80px;
-  color: #13E8E9;
+  color: #13e8e9;
   font-size: 0.8em;
   text-align: left;
   text-indent: 4px;
@@ -86,7 +90,8 @@ background-color: black;  overflow-x: hidden;
   font-size: 1.1em;
 }
 
-#stats, .count-particles {
+#stats,
+.count-particles {
   -webkit-user-select: none;
   margin-top: 5px;
   margin-left: 5px;
@@ -113,7 +118,7 @@ background-color: black;  overflow-x: hidden;
   font-weight: bold;
   color: #fff;
 }
-.navbar a{
+.navbar a {
   text-decoration: none;
 }
 /* Hamburger Menu Styling */
@@ -157,7 +162,7 @@ background-color: black;  overflow-x: hidden;
   text-align: center;
 }
 
-.menu li a, 
+.menu li a,
 .menu li button {
   color: white;
   text-decoration: none;
@@ -168,7 +173,7 @@ background-color: black;  overflow-x: hidden;
   font-size: 1rem;
 }
 
-.menu li button:hover, 
+.menu li button:hover,
 .menu li a:hover {
   background-color: #555;
   border-radius: 5px;
@@ -182,16 +187,16 @@ background-color: black;  overflow-x: hidden;
 /* Desktop View: Always Show Menu */
 @media (min-width: 768px) {
   .menu {
-      display: flex !important;
-      flex-direction: row;
-      position: static;
-      background-color: transparent;
-      box-shadow: none;
-      gap: 15px;
+    display: flex !important;
+    flex-direction: row;
+    position: static;
+    background-color: transparent;
+    box-shadow: none;
+    gap: 15px;
   }
 
   .hamburger {
-      display: none;
+    display: none;
   }
 }
 
@@ -212,7 +217,7 @@ background-color: black;  overflow-x: hidden;
 
 .form-content {
   background-color: white;
-  color: #318CE7;
+  color: #318ce7;
   padding: 40px;
   border-radius: 10px;
   width: 300px;
@@ -275,7 +280,7 @@ background-color: black;  overflow-x: hidden;
 }
 
 .flash-message.success {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
 }
 
@@ -285,15 +290,15 @@ background-color: black;  overflow-x: hidden;
 }
 
 @keyframes fadeInOut {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0;
   }
-  10%, 90% {
+  10%,
+  90% {
     opacity: 1;
   }
 }
-
-
 
 /* Close Button */
 .close {
@@ -305,8 +310,7 @@ background-color: black;  overflow-x: hidden;
   color: #333;
 }
 
-
-/* Welcome Section */  
+/* Welcome Section */
 .welcome {
   display: flex;
   flex-direction: column;
@@ -315,7 +319,11 @@ background-color: black;  overflow-x: hidden;
   text-align: center;
   height: 100vh;
   margin: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(38, 157, 255, 1) 95%);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(38, 157, 255, 1) 95%
+  );
   color: white;
 }
 
@@ -359,9 +367,106 @@ background-color: black;  overflow-x: hidden;
   height: 80vh;
   padding: 0 5%;
   margin: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(38, 157, 255, 1) 95%);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(38, 157, 255, 1) 95%
+  );
   background-color: black;
-  gap: 20px; /* Adds spacing between message section and map */
+  gap: 20px;
+}
+
+@media screen and (max-width: 1024px) {
+  /* Adjust for tablets and medium screens */
+  #content {
+    flex-direction: column;
+    height: auto;
+    padding: 0 3%;
+  }
+
+  .message-section,
+  #map {
+    flex: 0 0 100%;
+    margin-bottom: 20px; /* Spacing between message and map */
+  }
+
+  #map {
+    height: 400px; /* Ensure the map has enough height */
+    width: 100%; /* Ensure the map takes full width */
+    min-height: 300px; /* Minimum height for map visibility */
+  }
+}
+
+@media screen and (max-width: 768px) {
+  /* Adjust for mobile screens */
+  #content {
+    flex-direction: column;
+    height: auto;
+    padding: 0 2%;
+  }
+
+  .message-container {
+    width: 100%;
+    max-width: none;
+    padding: 15px;
+  }
+
+  #map {
+    height: 350px; /* Reduced map height for smaller screens */
+    width: 100%; /* Ensure full width */
+    min-height: 300px; /* Minimum height to avoid collapsing */
+  }
+
+  .message-container h2 {
+    font-size: 1.25rem;
+  }
+
+  #message-input {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+  .message-container button {
+    font-size: 0.9rem;
+  }
+
+  .popup-content h3 {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  /* Adjust for very small screens (small mobile devices) */
+  #content {
+    padding: 0 1%;
+  }
+
+  .message-container {
+    padding: 10px;
+  }
+
+  .message-container h2 {
+    font-size: 1rem;
+  }
+
+  #map {
+    height: 300px; /* Further reduce map height */
+    width: 100%; /* Ensure full width */
+    min-height: 250px; /* Avoid map from disappearing */
+  }
+
+  #message-input {
+    padding: 6px;
+    font-size: 0.85rem;
+  }
+
+  .message-container button {
+    font-size: 0.85rem;
+  }
+
+  .popup-content h3 {
+    font-size: 0.9rem;
+  }
 }
 
 /* Message Section */
@@ -396,7 +501,7 @@ background-color: black;  overflow-x: hidden;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 1rem;
-  box-sizing: border-box; /* Ensures consistent box model */
+  box-sizing: border-box;
 }
 
 .message-container button {
@@ -419,18 +524,20 @@ background-color: black;  overflow-x: hidden;
 /* Map Section */
 #map {
   flex: 1;
-  height: 500px; /* Map height */
+  height: 500px; /* Map height for larger screens */
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 100%; /* Ensure full width */
+  min-height: 300px; /* Prevent map from collapsing on small screens */
 }
 
-
-
+/* Popup Section */
 .popup-content button:hover {
-background-color: #002244;
+  background-color: #002244;
 }
+
 .message-popup {
-  display: none; /* Hidden by default */
+  display: none;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -452,66 +559,65 @@ background-color: #002244;
 
 .popup-content button {
   padding: 10px 20px;
-  background-color: #007BFF;
+  background-color: #007bff;
   color: #fff;
   border: none;
   border-radius: 5px;
-  cursor: pointer;
+  cursor: pointer;
 }
-
 
 /* Animations */
 @keyframes fadeIn {
-from {
-  opacity: 0;
-  transform: translateY(20px);
-}
-to {
-  opacity: 1;
-  transform: translateY(0);
-}
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes scaleUp {
-from {
-  transform: scale(0.8);
-  opacity: 0;
-}
-to {
-  transform: scale(1);
-  opacity: 1;
-}
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 #flash-messages ul {
-list-style-type: none;
-padding: 0;
-margin: 10px 0;
+  list-style-type: none;
+  padding: 0;
+  margin: 10px 0;
 }
 
 #flash-messages li {
-padding: 10px;
-margin: 5px 0;
-border-radius: 5px;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
 }
 
 #flash-messages .success {
-background-color: #28a745;
-color: white;
+  background-color: #28a745;
+  color: white;
 }
 
 #flash-messages .error {
-background-color: #dc3545;
-color: white;
+  background-color: #dc3545;
+  color: white;
 }
 
 #flash-messages .info {
-background-color: #17a2b8;
-color: white;
+  background-color: #17a2b8;
+  color: white;
 }
 
 /* Basic styling for the flash messages */
-     /* Flash Message Alert */
+/* Flash Message Alert */
 #flash-messages {
   position: fixed;
   top: 0; /* Stick to the top */
@@ -567,138 +673,149 @@ color: white;
   }
 }
 
+.btn-165 {
+  padding: 10px 25px;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 0.5rem;
+  border: 1px solid #bebebe;
+  gap: 10px;
+  color: #414141;
+  background: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  cursor: pointer;
+  text-decoration: none;
+  user-select: none;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  /*** full width block ***/
+  /* width: 100%; */
+}
 
-      .btn-165 {
-        padding: 10px 25px;
-        font-size: 14px;
-        font-weight: 700;
-        text-align: center;
-        vertical-align: middle;
-        border-radius: 0.5rem;
-        border: 1px solid #bebebe;
-        gap: 10px;
-        color: #414141;
-        background: #fff;
-        font-family: Arial, Helvetica, sans-serif;
-        cursor: pointer;
-        text-decoration: none;
-        user-select: none;
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        /*** full width block ***/
-        /* width: 100%; */
-    }
-    
-    .btn-165 svg {
-        height: 24px;
-    }
-    
-    .btn-165:hover {
-        border: solid 1px #464545;
-    }
-    
-    .btn-165:active {
-        margin-top: 1px;
-    }
-    
-    /*** disabled style ***/
-    .btn-165:disabled {
-        pointer-events: none;
-        opacity: .65;
-        color: #7e7e7e;
-        background: #dcdcdc;
-        box-shadow: none;
-        text-shadow: none;
-    }
+.btn-165 svg {
+  height: 24px;
+}
 
-    /* Adjust Info Modal for Right Corner */
+.btn-165:hover {
+  border: solid 1px #464545;
+}
+
+.btn-165:active {
+  margin-top: 1px;
+}
+
+/*** disabled style ***/
+.btn-165:disabled {
+  pointer-events: none;
+  opacity: 0.65;
+  color: #7e7e7e;
+  background: #dcdcdc;
+  box-shadow: none;
+  text-shadow: none;
+}
+
+/* Adjust Info Modal for Right Corner */
 #info-modal {
-display:contents;
-position: fixed;
-top: 50px;
-margin-left: 77%;
-left: 0px; /* Distance from the top */
-right:0px; /* Distance from the right */
-width: 300px; /* Maintain existing width */
-height: auto; /* Adjust height as needed */
-background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent white background */
-border-radius: 40px;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-z-index: 1000; /* Ensure it stays on top of other elements */
-padding: 20px;
+  display: contents;
+  position: fixed;
+  top: 50px;
+  margin-left: 77%;
+  left: 0px; /* Distance from the top */
+  right: 0px; /* Distance from the right */
+  width: 300px; /* Maintain existing width */
+  height: auto; /* Adjust height as needed */
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.95
+  ); /* Slightly transparent white background */
+  border-radius: 40px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000; /* Ensure it stays on top of other elements */
+  padding: 20px;
 }
 
 /* Adjust Form Content for Info Modal */
 #info-modal .form-content {
-background-color: transparent; /* Transparent to align with modal */
-padding: 0; /* Remove additional padding */
-text-align: left; /* Align text to the left for better readability */
-color: #333; /* Keep consistent text color */
-position: relative;
+  background-color: transparent; /* Transparent to align with modal */
+  padding: 0; /* Remove additional padding */
+  text-align: left; /* Align text to the left for better readability */
+  color: #333; /* Keep consistent text color */
+  position: relative;
 }
 
 /* Adjust Close Button for Info Modal */
 #info-modal .close {
-position: absolute;
-top: 10px;
-right: 10px;
-cursor: pointer;
-font-size: 1.2rem;
-color: #666;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #666;
 }
 
 /* Add animation for the Info Modal */
 @keyframes slideIn {
-from {
+  from {
     transform: translateY(-100%);
     opacity: 0;
-}
-to {
+  }
+  to {
     transform: translateY(0);
     opacity: 1;
-}
+  }
 }
 
 @keyframes slideOut {
-from {
+  from {
     transform: translateY(0);
     opacity: 1;
-}
-to {
+  }
+  to {
     transform: translateY(-100%);
     opacity: 0;
-}
+  }
 }
 
 /* Add active class for animation */
 #info-modal.active {
-display: flex; /* Make sure modal is visible */
-animation: slideIn 0.5s ease-in-out forwards;
+  display: flex; /* Make sure modal is visible */
+  animation: slideIn 0.5s ease-in-out forwards;
 }
 
 /* Add closing animation */
 #info-modal.closing {
-animation: slideOut 0.5s ease-in-out forwards;
-pointer-events: none;
+  animation: slideOut 0.5s ease-in-out forwards;
+  pointer-events: none;
 }
 
+/* Footer */
 .footer {
-  background: linear-gradient(135deg, #001A6E, #074799);
+  background: linear-gradient(135deg, #001a6e, #074799);
   color: white;
   padding: 3rem 5%;
+  text-align: center; /* Center the footer content */
 }
 
 .footer-content {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  align-items: flex-start; /* Align items to the top */
+  gap: 2rem; /* Provide some space between sections */
+  margin-bottom: 2rem; /* Add spacing between footer content and bottom section */
 }
 
 .footer-section {
   flex: 1;
-  margin-right: 2rem;
   min-width: 250px;
+  max-width: 350px; /* Control maximum width for better balance */
+  margin-right: 2rem;
+  text-align: left; /* Align text to the left for a cleaner look */
 }
 
 .footer-section:last-child {
@@ -709,20 +826,23 @@ pointer-events: none;
   border-bottom: 2px solid white;
   padding-bottom: 0.5rem;
   margin-bottom: 1rem;
-  font-size: 1.2rem;
+  font-size: 1.3rem; /* Adjust font size for better visibility */
 }
 
 .footer-section ul {
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .footer-section ul li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.8rem; /* Increase space between list items */
 }
 
 .footer-section ul li a {
   color: white;
   text-decoration: none;
+  font-size: 1rem; /* Slightly larger font size for readability */
   transition: color 0.3s ease;
 }
 
@@ -733,12 +853,13 @@ pointer-events: none;
 
 .social-icons {
   display: flex;
-  gap: 1rem;
+  justify-content: center; /* Center social icons */
+  gap: 1.5rem; /* Space out icons */
 }
 
 .social-icons a {
   color: white;
-  font-size: 1.5rem;
+  font-size: 1.8rem; /* Larger icon size for better visibility */
   transition: color 0.3s ease;
 }
 
@@ -749,25 +870,149 @@ pointer-events: none;
 .footer-bottom {
   text-align: center;
   padding-top: 2rem;
-  border-top: 1px solid rgba(255,255,255,0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
   margin-top: 2rem;
+  font-size: 0.9rem; /* Slightly smaller font size for footer text */
 }
 
-@media screen and (max-width: 768px) {
+/* Responsive Adjustments for Laptop Screens */
+@media screen and (max-width: 1024px) {
   .footer-content {
-      flex-direction: column;
+    flex-direction: column; /* Stack the sections vertically on smaller screens */
+    align-items: center; /* Center align the sections */
   }
 
   .footer-section {
-      margin-right: 0;
-      margin-bottom: 1.5rem;
+    margin-right: 0;
+    margin-bottom: 2rem; /* Add spacing between sections */
+    text-align: center; /* Center the text within each section */
+    max-width: 400px; /* Allow sections to be wider on medium-sized screens */
+  }
+
+  .footer-section h3 {
+    font-size: 1.4rem; /* Increase heading font size */
+  }
+
+  .footer-section ul li {
+    font-size: 1.1rem; /* Slightly larger font size for list items */
+  }
+
+  .social-icons {
+    justify-content: center; /* Keep social icons centered */
+    margin-top: 2rem; /* Add space above social icons */
+  }
+
+  .social-icons a {
+    font-size: 2rem; /* Make the social icons larger for better visibility */
+  }
+
+  .footer-bottom {
+    font-size: 1rem; /* Make the bottom text slightly larger */
   }
 }
-/* From Uiverse.io by vinodjangid07 */ 
+
+
+/* Responsive Adjustments */
+@media screen and (max-width: 1024px) {
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-section {
+    margin-right: 0;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    min-width: 100%;
+  }
+
+  .footer-section h3 {
+    font-size: 1.5rem; /* Slightly larger for better readability on medium screens */
+  }
+
+  .social-icons {
+    justify-content: center; /* Center the social icons */
+    margin-top: 1rem;
+  }
+
+  .social-icons a {
+    font-size: 1.8rem; /* Increase icon size slightly */
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .footer {
+    padding: 2rem 4%;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+  }
+
+  .footer-section {
+    margin-right: 0;
+    margin-bottom: 1rem;
+    text-align: center;
+    min-width: 100%;
+  }
+
+  .footer-section h3 {
+    font-size: 1.2rem; /* Adjust font size for smaller screens */
+  }
+
+  .footer-section ul li {
+    font-size: 0.9rem; /* Slightly smaller text for mobile */
+  }
+
+  .social-icons {
+    justify-content: center;
+    margin-top: 1rem;
+  }
+
+  .social-icons a {
+    font-size: 1.5rem; /* Adjust icon size for mobile */
+  }
+
+  .footer-bottom {
+    font-size: 0.9rem; /* Smaller footer bottom text */
+    padding-top: 1rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .footer {
+    padding: 1.5rem 3%;
+  }
+
+  .footer-section h3 {
+    font-size: 1.1rem; /* Adjust for very small screens */
+  }
+
+  .footer-section ul li {
+    font-size: 0.85rem; /* Make text smaller */
+  }
+
+  .social-icons {
+    gap: 0.8rem; /* Reduce gap between icons */
+  }
+
+  .social-icons a {
+    font-size: 1.3rem; /* Reduce icon size for mobile */
+  }
+
+  .footer-bottom {
+    font-size: 0.8rem; /* Even smaller text for the very small screens */
+    padding-top: 1rem;
+  }
+}
+
+/* From Uiverse.io by vinodjangid07 */
 .card {
   width: fit-content;
   height: fit-content;
-  background-color: linear-gradient(135deg, #001A6E, #074799);
+  background-color: linear-gradient(135deg, #001a6e, #074799);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -785,32 +1030,32 @@ pointer-events: none;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  transition-duration: .3s;
+  transition-duration: 0.3s;
 }
 /* instagram*/
 .containerOne:hover {
   background-color: #d62976;
-  transition-duration: .3s;
+  transition-duration: 0.3s;
 }
 /* twitter*/
 .containerTwo:hover {
   background-color: #00acee;
-  transition-duration: .3s;
+  transition-duration: 0.3s;
 }
 /* linkdin*/
 .containerThree:hover {
   background-color: #0072b1;
-  transition-duration: .3s;
+  transition-duration: 0.3s;
 }
 /* Whatsapp*/
 .containerFour:hover {
-  background-color: #128C7E;
-  transition-duration: .3s;
+  background-color: #128c7e;
+  transition-duration: 0.3s;
 }
 
 .socialContainer:active {
   transform: scale(0.9);
-  transition-duration: .3s;
+  transition-duration: 0.3s;
 }
 
 .socialSvg {

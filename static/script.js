@@ -136,21 +136,7 @@ if (logoutButton) {
   logoutButton.addEventListener('click', logout);
 }
 
-function openInfo() {
-  const infoModal = document.getElementById('info-modal');
-  infoModal.classList.remove('closing'); // Remove closing animation class
-  infoModal.classList.add('active'); // Add active class for slide-in animation
-  infoModal.style.display = 'flex'; // Ensure modal is visible
-}
 
-function closeInfo() {
-  const infoModal = document.getElementById('info-modal');
-  infoModal.classList.remove('active'); // Remove active animation class
-  infoModal.classList.add('closing'); // Add closing animation class
-  setTimeout(() => {
-      infoModal.style.display = 'none'; // Hide the modal after animation
-  }, 500); // Match the animation duration (0.5s)
-}
 
 function toggleMenu() {
   const menu = document.querySelector('.menu');

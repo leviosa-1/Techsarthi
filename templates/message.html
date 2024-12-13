@@ -13,12 +13,9 @@
     <!-- Navbar -->
   <!-- Navbar -->
 <nav class="navbar">
-    <div class="logo">Tech Sarthi</div>
-    <div class="hamburger" onclick="toggleMenu()">
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
+    <a href="#"><div class="logo">Tech Sarthi</div></a>
+    <button class="hamburger" onclick="toggleMenu()">=</button>
+    
     <ul class="menu">
         <li><button onclick="openInfo()">Info</button></li>
         <li><a href="#about">About</a></li>
@@ -68,7 +65,7 @@
 <!-- Message Sent Pop-Up -->
 <div id="message-popup" class="message-popup" style="display: none;">
     <div class="popup-content">
-        <h3>Message Sent!</h3>
+        <h3 style="color:black">Message send sucessfully</h3>
         <button onclick="closePopup()">OK</button>
     </div>
 </div>

@@ -96,53 +96,103 @@ background-color: black;  overflow-x: hidden;
   border-radius: 3px 3px 0 0;
   overflow: hidden;
 }
-
-
-
+/* Navbar Styling */
 .navbar {
-  margin: 0;
-  padding: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
   background-color: black;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .navbar .logo {
   font-size: 1.5rem;
   font-weight: bold;
   color: #fff;
-
 }
-
-.navbar .menu {
-  align-items: center;
-  display: flex;
-  list-style: none;
-  gap: 15px;
-  color: #fff;
-
-}
-
-.navbar .menu a, .navbar .menu button {
-  color: #fff;
+.navbar a{
   text-decoration: none;
-  border: none;
-  background: none;
+}
+/* Hamburger Menu Styling */
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 25px;
+  height: 20px;
   cursor: pointer;
-  font-size: 1rem;
+  z-index: 1100;
 }
 
-.navbar .menu button {
-  padding: 5px 10px;
-  border: 1px solid #fff;    
-  border-radius: 5px;
+.hamburger span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: white;
+  border-radius: 2px;
   transition: 0.3s;
 }
 
-.navbar .menu button:hover {
-  background-color: #fff;
+/* Menu Styling */
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: none; /* Hide by default */
+  flex-direction: column;
+  background-color: black;
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.menu li {
+  margin: 10px 0;
+  text-align: center;
+}
+
+.menu li a, 
+.menu li button {
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  display: block;
+  border: none;
+  background: none;
+  font-size: 1rem;
+}
+
+.menu li button:hover, 
+.menu li a:hover {
+  background-color: #555;
+  border-radius: 5px;
+}
+
+/* Menu Visible State */
+.menu.active {
+  display: flex;
+}
+
+/* Desktop View: Always Show Menu */
+@media (min-width: 768px) {
+  .menu {
+      display: flex !important;
+      flex-direction: row;
+      position: static;
+      background-color: transparent;
+      box-shadow: none;
+      gap: 15px;
+  }
+
+  .hamburger {
+      display: none;
+  }
 }
 
 /* Form Popup */

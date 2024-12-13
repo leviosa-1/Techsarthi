@@ -162,3 +162,4 @@ function closeInfo() {
       infoModal.style.display = 'none'; // Hide the modal after animation
   }, 500); // Match the animation duration (0.5s)
 }
+

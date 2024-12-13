@@ -1,15 +1,63 @@
-/* Reset */
+/* Reset default margins */
 body, html {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  height: 100%;
   font-family: Arial, sans-serif;
+background-color: black;  overflow-x: hidden;
+  color: white;
+}
+
+/* ---- particles.js container ---- */
+#particles-js {
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(38, 157, 255, 1) 95%);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
+/* ---- stats.js ---- */
+.count-particles {
+  background: #000022;
+  position: absolute;
+  top: 48px;
+  left: 0;
+  width: 80px;
+  color: #13E8E9;
+  font-size: 0.8em;
+  text-align: left;
+  text-indent: 4px;
+  line-height: 14px;
+  padding-bottom: 2px;
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  border-radius: 0 0 3px 3px;
+}
+
+.js-count-particles {
+  font-size: 1.1em;
+}
+
+#stats, .count-particles {
+  -webkit-user-select: none;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+
+#stats {
+  border-radius: 3px 3px 0 0;
+  overflow: hidden;
 }
 
 
 
-
 .navbar {
+  margin: 0;
+  padding: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -163,12 +211,6 @@ body, html {
   color: #333;
 }
 
-#welcome{
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
 
 /* Welcome Section */  
 .welcome {
@@ -178,15 +220,13 @@ body, html {
   align-items: center;
   text-align: center;
   height: 100vh;
-  background: rgb(0,0,0);
-background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(38,157,255,1) 95%);
+  margin: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(38, 157, 255, 1) 95%);
   color: white;
-  
 }
 
 /* Heading Animation */
 .welcome h1 {
-  display: flex;
   color: #ffffff; /* Bright white for contrast */
   font-size: 3.5rem;
   margin-bottom: 20px;
@@ -196,22 +236,6 @@ background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(38,157,255,1) 95%);
   animation: textSlideIn 1.2s ease-in-out;
 }
 
-/* Paragraph Animation */
-.welcome p {
-  font-size: 1.3rem;
-  line-height: 1.8;
-  max-width: 800px; /* Limit the paragraph width */
-  color: #f1f1f1;
-  animation: fadeInDelay 2s ease-in-out;
-}
-
-
-/* Add some glow effect to the welcome heading */
-.welcome h1:hover {
-  text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.6);
-  transition: text-shadow 0.5s ease-in-out;
-}
-
 /* Animations */
 @keyframes fadeIn {
   from {
@@ -219,17 +243,6 @@ background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(38,157,255,1) 95%);
   }
   to {
     opacity: 1;
-  }
-}
-
-@keyframes fadeInDelay {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -244,74 +257,79 @@ background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(38,157,255,1) 95%);
   }
 }
 
+/* Main Content Section */
 #content {
-  height: 780px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80vh;
+  padding: 0 5%;
+  margin: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(38, 157, 255, 1) 95%);
+  background-color: black;
+  gap: 20px; /* Adds spacing between message section and map */
 }
+
 /* Message Section */
 .message-section {
-display: flex;
-justify-content: center;
-align-items: center;
-height: 100vh;
-background: rgb(0,0,0);
-background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(38,157,255,1) 95%);
-color: white;
-margin-top: -70px;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .message-container {
-margin-right: 950px;  
-width: 500px;
-height: 230px;
-max-width: 800px;
-background-color: white;
-color: #003366;
-border-radius: 10px;
-padding: 20px;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-animation: fadeIn 1s ease-in-out;
+  width: 100%;
+  max-width: 400px;
+  background-color: white;
+  color: #003366;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 1s ease-in-out;
 }
 
 .message-container h2 {
-margin-bottom: 20px;
-margin-left: 150px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 1.5rem;
 }
 
-#map {
-top: -700px; 
-left: 800px;
-border-radius: 5%;
-height: 450px; /* Map height */
-width: 50%;   /* Map width */
-}
-
-.message-container textarea {
-width: 90%;
-padding: 10px;
-margin-bottom: 20px;
-border: 1px solid #ccc;
-border-radius: 5px;
-resize: none;
+#message-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  box-sizing: border-box; /* Ensures consistent box model */
 }
 
 .message-container button {
-  align-items: center;
-  align-self: center;
-  align-content: center;
-  margin-left: 200px;
-padding: 10px 20px;
-background-color: #002244;
-color: white;
-border: none;
-border-radius: 5px;
-cursor: pointer;
-font-size: 1rem;
-transition: 0.3s;
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #003366;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
 }
 
 .message-container button:hover {
-background-color:#002244;
+  background-color: #0266c8;
 }
+
+/* Map Section */
+#map {
+  flex: 1;
+  height: 500px; /* Map height */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 
 
 .popup-content button:hover {

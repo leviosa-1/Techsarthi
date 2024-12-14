@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.secret_key = "abcdefghijklmnopqrstuv123456789"  # Replace with a strong, unique key
 
 # Initialize Firebase
-cred = credentials.Certificate("blind-stick-app-9e9d4-firebase-adminsdk-8okyg-f113f9ef6c.json")
+cred = credentials.Certificate("blind-stick-app-9e9d4-firebase-adminsdk-8okyg-2c3f1333b5.json")
 firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://blind-stick-app-9e9d4-default-rtdb.firebaseio.com/'
 })

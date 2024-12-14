@@ -1,22 +1,29 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session, flash
 import firebase_admin
+from dotenv import load_dotenv
+import os
 from firebase_admin import credentials, db
 from werkzeug.security import generate_password_hash, check_password_hash
 from threading import Timer
 import requests
 
+load_dotenv()
+
 # Initialize Flask app
 app = Flask(__name__)
-app.secret_key = "abcdefghijklmnopqrstuv123456789"  # Replace with a strong, unique key
+app.secret_key = os.getenv("SECRET_KEY")
 
 # Initialize Firebase
-cred = credentials.Certificate("blind-stick-app-9e9d4-firebase-adminsdk-8okyg-2c3f1333b5.json")
+firebase_cred_path = os.getenv("FIREBASE_KEY_PATH")
+firebase_database_url = os.getenv("FIREBASE_DATABASE_URL")
+
+cred = credentials.Certificate(firebase_cred_path)
 firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://blind-stick-app-9e9d4-default-rtdb.firebaseio.com/'
+    'databaseURL': firebase_database_url
 })
 
 # Secret key from Google reCAPTCHA
-RECAPTCHA_SECRET_KEY = "6Lc045gqAAAAAESIvd0sP-iT1Xa2i2DX8L-WnLW6"
+RECAPTCHA_SECRET_KEY = os.getenv("RECAPTCHA_SECRET_KEY")
 
 # Global variable for latest message
 latest_message = ""

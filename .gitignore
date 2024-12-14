@@ -1,0 +1,22 @@
+# .gitignore
+
+# Ignore environment files
+.env
+
+# Firebase credentials
+blind-stick-app-9e9d4-firebase-adminsdk-8okyg-6c920367bc.json
+
+# Byte-compiled Python files
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+venv/
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# IDE-specific files
+.vscode/
+.idea/
